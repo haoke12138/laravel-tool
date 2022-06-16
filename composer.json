@@ -1,0 +1,20 @@
+{
+    "name": "zhenghaoke/laravel-tool",
+    "authors": [
+        {
+            "name": "浩克啊",
+            "email": "1613048203@qq.com"
+        }
+    ],
+    "require": {
+        "php": "7.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "ZHK\\Tool\\": "src"
+        },
+        "files": [
+            "src/Common/helper.php"
+        ]
+    }
+}
