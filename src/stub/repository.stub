@@ -1,0 +1,15 @@
+<?php
+
+namespace {namespace};
+
+use {model} as Model;
+
+class {class} extends EloquentRepository
+{
+    /**
+     * Model.
+     *
+     * @var string
+     */
+    protected $eloquentClass = Model::class;
+}
