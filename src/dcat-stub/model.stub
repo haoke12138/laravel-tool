@@ -7,7 +7,10 @@ use App\Models\Model;
 class DummyClass extends Model
 {
     DummyUseSoftDeletesTrait
+
     DummyModelTable
+
     DummyModelKey
+
     DummyTimestamp
 }

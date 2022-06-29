@@ -1,7 +1,5 @@
 <?php
 
-use App\Models\Navigation;
-
 if (!function_exists('array_parts')) {
     function array_parts(array $array, array $keys)
     {
@@ -173,54 +171,6 @@ if (! function_exists('array_tree')) {
     }
 }
 
-if (!function_exists('getNavigate')) {
-    /**
-     * @see 获取导航栏
-     * @return array
-     */
-    function getNavigate()
-    {
-        $nar = Navigation::where('enable', 1)
-            ->orderBy('order')->get()->toArray();
-        $nar = array_index($nar, 'id');
-
-        return array_tree($nar, 'parent_id');
-    }
-}
-
-if (!function_exists('getCurrentPage')) {
-    /**
-     * @see 获取当前页面
-     * @param $slug
-     * @return array
-     */
-    function getCurrentPage($slug)
-    {
-        $slugName = explode('.', $slug);
-        $nar = Navigation::where('slug', head($slugName))
-            ->orderBy('order')->first();
-        if (!empty($nar)) {
-            $nar['father'] = $nar['parent_id'] != 0 ? Navigation::where('id', $nar['parent_id'])->value('title') : '';
-            $nar['fatherSlug'] = $nar['parent_id'] != 0 ? Navigation::where('id', $nar['parent_id'])->value('slug') : '';
-            $nar['fatherLink'] = $nar['parent_id'] != 0 ? Navigation::where('id', $nar['parent_id'])->value('link') : '';
-        }
-
-        return empty($nar) ? [] : $nar;
-    }
-}
-
-if (!function_exists('getContact')) {
-    /**
-     * @see 获取页脚联系我们
-     * @return array
-     */
-    function getContact()
-    {
-        return config('app');
-    }
-}
-
-
 if (!function_exists('crossJoin')) {
     /**
      * 数据笛卡尔积排列
@@ -258,3 +208,37 @@ if (!function_exists('crossJoin')) {
     }
 }
 
+#密码加密
+if(!function_exists('password_hash')) {
+    function password_hash($password)
+    {
+        $iterations=100000;
+        $length=40;
+        $salt = openssl_random_pseudo_bytes(16);
+        $salt_encode=base64_encode($salt);
+        $hash = hash_pbkdf2("sha256", $password, $salt, $iterations, $length);
+        return $hash.$salt_encode;
+    }
+}
+
+#验证密码是否正确
+if(!function_exists('password_hash')) {
+    function password_verify($password,$hash)
+    {
+        if(sha1($password)==$hash){
+            return true;
+        }
+        if(strlen($hash)<=40){
+            return false;
+        }
+        $iterations=100000;
+        $length=40;
+        $passhash=substr($hash,0,$length);
+        $salt=base64_decode(substr($hash,$length));
+        $passhash2=hash_pbkdf2("sha256", $password, $salt, $iterations, $length);
+        if($passhash==$passhash2){
+            return true;
+        }
+        return false;
+    }
+}

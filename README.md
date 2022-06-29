@@ -1,6 +1,8 @@
-## 关于Laravel Tool
+## 使用Laraval Tool
+`composer require zhenghaoke/laravel-tool`
 
-使用前需要将 `ToolServiceProvider.php`在`app.php`中的`providers`引入
+将 `ToolServiceProvider.php`在`app.php`中的`providers`引入
+## 关于Laravel Tool
 
 - 1.帮助函数, 位于 `src/Common/helper.php`
 
@@ -23,7 +25,6 @@ repository('User');
 - 5.artisan命令 生成多语言表
 - 6.artisan命令 生成数据库表结构文档
   <br><br><br>
-  remote：对密码身份验证的支持已于 2021 年 8 月 13 日移除。请改用个人访问令牌。远程：请参阅 https:github.blog2020-12-15-token-authentication-requirements-for-git-operations 了解更多信息。致命：'https：github.comhaoke12138laravel-tool.git 的身份验证失败
 
 #### 自动加载使用方法和规则<br>
   使用方式如下
@@ -40,3 +41,7 @@ repository('User');
     }
 
 - 7.添加stub创建模板, 若有使用dcat会替换掉原有的dcat的model.stub和repository.stub
+
+- 8.添加中文翻译文件
+
+- 9.添加api的Request文件

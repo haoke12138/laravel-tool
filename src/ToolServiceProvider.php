@@ -5,12 +5,14 @@ namespace ZHK\Tool;
 use Illuminate\Support\ServiceProvider;
 use ZHK\Tool\Commands\GenerateMultiLanguageTable;
 use ZHK\Tool\Commands\TableStructureExport;
+use ZHK\Tool\Commands\ReplaceStubFile;
 
 class ToolServiceProvider extends ServiceProvider
 {
     protected $commands = [
         GenerateMultiLanguageTable::class,
         TableStructureExport::class,
+        ReplaceStubFile::class,
     ];
 
     /**
@@ -23,28 +25,16 @@ class ToolServiceProvider extends ServiceProvider
         $this->registerModel();
         $this->registerService();
         $this->registerRepository();
-        $paths = [
+
+        $this->publishes([
             __DIR__. '/stub' => base_path('stub'),
             __DIR__. '/Models' => app_path('Models'),
             __DIR__. '/Services' => app_path('Service'),
+            __DIR__. '/Requests' => app_path('Http/Requests'),
+            __DIR__. '/Repositories' => app_path('Admin/Repositories'),
             __DIR__. '/config.php' => config_path('haoke.php'),
-        ];
-        $this->publishes($paths);
-
-        $dir = base_path('vendor/dcat/laravel-admin/src/Scaffold/stubs');
-
-        if (is_dir($dir) && file_exists(config_path('haoke.php')) && !config('haoke.is_genderate')){
-            dump('开始复制');
-            exec('rm ' . $dir.'/model.stub');
-            app('files')->copy(__DIR__. '/dcat-stub/model.stub', $dir.'/model.stub');
-            exec('chmod 777 ' . $dir.'/model.stub');
-
-            exec('rm ' . $dir.'/repository.stub');
-            app('files')->copy(__DIR__. '/dcat-stub/repository.stub', $dir.'/repository.stub');
-            exec('chmod 777 ' . $dir.'/repository.stub');
-
-            file_put_contents(app()->environmentFilePath(), "\nZHK_GENERATE=true", FILE_APPEND);
-        }
+            __DIR__. '/../resource/lang' => base_path('resource/lang'),
+        ]);
     }
 
     /**
@@ -55,11 +45,6 @@ class ToolServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->commands($this->commands);
-    }
-
-    private function refisterCommand()
-    {
-
     }
 
     private function registerModel()
