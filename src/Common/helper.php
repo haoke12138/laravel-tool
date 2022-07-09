@@ -93,6 +93,31 @@ if (! function_exists('file_path')) {
     }
 }
 
+if (!function_exists('link_path')) {
+    function link_path($link)
+    {
+        return empty($link) ? 'javascript:;' : $link;
+    }
+}
+
+if (!function_exists('page_desc')) {
+    function page_desc($str)
+    {
+        $str = str_replace("\n", '<br>', $str, $count);
+        if (!$count) {
+            $str = str_replace("\r", '<br>', $str, $count);
+        }
+
+        return $str;
+    }
+}
+
+if (!function_exists('verify_code')) {
+    function verify_code()
+    {
+        return mt_rand(100000, 999999);
+    }
+}
 
 if (! function_exists('model')) {
     /**
@@ -156,8 +181,7 @@ if (! function_exists('array_tree')) {
     function array_tree($array, $key='parent_id', $id = 0, $orderBy = 'order', $sortType = SORT_DESC)
     {
         // 排序
-        $orderBy = array_column($array, $orderBy);
-        array_multisort($orderBy, $sortType, $array); // 根据$orderBy数组进行排序
+        array_multisort(array_column($array, $orderBy), $sortType, $array); // 根据$orderBy数组进行排序
 
         $newArray = $filterArray = array_filter($array, function ($a) use($key, $id) {
             return $a[$key] == $id;
@@ -207,6 +231,8 @@ if (!function_exists('crossJoin')) {
         return $result;
     }
 }
+
+
 
 #密码加密
 if(!function_exists('password_hash')) {

@@ -14,7 +14,9 @@
             "ZHK\\Tool\\": "src"
         },
         "files": [
-            "src/Common/helper.php"
+            "src/Common/helper.php",
+            "src/Common/app.php",
+            "src/Common/admin.php"
         ]
     }
 }
