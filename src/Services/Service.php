@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Services;
+namespace ZHK\Tool\Services;
 
-use App\Services\Exceptions\NotFundException;
+use ZHK\Tool\Services\Exceptions\NotFundException;
 
 class Service
 {

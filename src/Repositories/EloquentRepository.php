@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admin\Repositories;
+namespace ZHK\Tool\Repositories;
 
 use Dcat\Admin\Form;
 use Dcat\Admin\Repositories\EloquentRepository as BaseRepository;

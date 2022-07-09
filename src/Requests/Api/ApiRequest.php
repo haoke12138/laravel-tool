@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Api;
+namespace ZHK\Tool\Requests\Api;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
@@ -25,10 +25,12 @@ class ApiRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'content' => 'required|max:255',
-            'message_id' => 'required',
-        ];
+        return [];
+    }
+
+    public function message()
+    {
+        return [];
     }
 
     public function failedValidation(Validator $validator)

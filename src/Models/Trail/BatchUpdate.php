@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Trail;
+namespace ZHK\Tool\Models\Trail;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;

@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Models;
+namespace ZHK\Tool\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use App\Models\Exceptions\NotFoundException;
-use App\Models\Exceptions\ParamException;
-use DateTimeInterface;
 use Illuminate\Database\Eloquent\Model as BaseModel;
+use ZHK\Tool\Models\Exceptions\NotFoundException;
+use ZHK\Tool\Models\Exceptions\ParamException;
+use Illuminate\Support\Facades\DB;
+use DateTimeInterface;
 
 abstract class Model extends BaseModel
 {
@@ -105,6 +106,7 @@ abstract class Model extends BaseModel
         foreach ($conditions as $key => $condition) {
             $dec = $this->declares();
             if (empty($dec[$key])) {
+                $query->where($key, $condition);
                 continue;
             }
             if (is_array($dec[$key])) {
@@ -126,7 +128,12 @@ abstract class Model extends BaseModel
      */
     public function scopeCWhere($query, array $conditions)
     {
-        return $this->CustomWhere($conditions);
+        return $this->customWhere($conditions);
+    }
+
+    public function scopeGbkOrder($query, string $field, string $order = 'asc')
+    {
+        $query->orderBy(DB::raw('convert(`'.$field.'` using gbk)'), $order);
     }
 
     /**
@@ -150,8 +157,5 @@ abstract class Model extends BaseModel
      *         (new Model)->customWhere();
      * @return array
      */
-    protected function declares()
-    {
-        return [];
-    }
+    protected abstract function declares();
 }

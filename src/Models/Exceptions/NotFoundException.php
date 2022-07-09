@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\Exceptions;
+namespace ZHK\Tool\Models\Exceptions;
 
 class NotFoundException extends \Exception
 {

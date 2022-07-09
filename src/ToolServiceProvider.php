@@ -27,13 +27,12 @@ class ToolServiceProvider extends ServiceProvider
         $this->registerRepository();
 
         $this->publishes([
-            __DIR__. '/stub' => base_path('stub'),
-            __DIR__. '/Models' => app_path('Models'),
-            __DIR__. '/Services' => app_path('Service'),
-            __DIR__. '/Requests' => app_path('Http/Requests'),
-            __DIR__. '/Repositories' => app_path('Admin/Repositories'),
-            __DIR__. '/config.php' => config_path('haoke.php'),
-            __DIR__ . '/../resources/lang' => base_path('resources/lang'),
+            __DIR__ . '/stub' => base_path('stub'),
+            __DIR__ . '/Mirror/Models/Model.php' => app_path('Models/Model.php'),
+            __DIR__ . '/Mirror/Services/Service.php' => app_path('Services/Service.php'),
+            __DIR__ . '/Mirror/Repositories/EloquentRepository.php' => app_path('Admin/Repositories/EloquentRepository.php'),
+            __DIR__ . '/config.php' => config_path('haoke.php'),
+            __DIR__ . '/../resources/lang/zh_CN/validation.php' => base_path('resources/lang/zh_CN/validation.php'),
         ]);
     }
 
