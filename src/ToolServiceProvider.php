@@ -33,7 +33,7 @@ class ToolServiceProvider extends ServiceProvider
             __DIR__. '/Requests' => app_path('Http/Requests'),
             __DIR__. '/Repositories' => app_path('Admin/Repositories'),
             __DIR__. '/config.php' => config_path('haoke.php'),
-            __DIR__. '/../resource/lang' => base_path('resource/lang'),
+            __DIR__ . '/../resources/lang' => base_path('resources/lang'),
         ]);
     }
 

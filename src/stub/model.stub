@@ -7,4 +7,9 @@ use App\Models\Model;
 class {{ class }} extends Model
 {
 
+
+    protected function declares()
+    {
+        return [];
+    }
 }
