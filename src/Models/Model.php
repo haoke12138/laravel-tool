@@ -137,6 +137,17 @@ abstract class Model extends BaseModel
     }
 
     /**
+     * find_in_set 方法
+     * @param $query
+     * @param $field
+     * @param $value
+     */
+    public function scopeFindInSet($query, $field,  $value)
+    {
+        $query->whereRaw("FIND_IN_SET(?,$field)", $value);
+    }
+
+    /**
      * 查询变量声明
      *     Example:
      *         return [

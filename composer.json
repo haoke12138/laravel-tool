@@ -18,5 +18,10 @@
             "src/Common/app.php",
             "src/Common/admin.php"
         ]
+    },
+    "extra": {
+        "laravel": {
+            "provider" : "ZHK\\Tool\\ToolServiceProvider"
+        }
     }
 }

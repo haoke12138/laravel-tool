@@ -191,7 +191,7 @@ if (! function_exists('array_tree')) {
             $newArray[$k]['child'] = array_tree($array, $key, $filter['id'], $orderBy, $sortType);
         }
 
-        return $newArray;
+        return array_values($newArray);
     }
 }
 
