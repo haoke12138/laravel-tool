@@ -2,7 +2,6 @@
 
 namespace ZHK\Tool\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model as BaseModel;
 use ZHK\Tool\Models\Exceptions\NotFoundException;
 use ZHK\Tool\Models\Exceptions\ParamException;
@@ -11,8 +10,6 @@ use DateTimeInterface;
 
 abstract class Model extends BaseModel
 {
-    use HasFactory;
-
     /**
      * @param DateTimeInterface $date
      * @return string
@@ -111,6 +108,9 @@ abstract class Model extends BaseModel
             }
             if (is_array($dec[$key])) {
                 $query->whereRaw(last($dec[$key]), $condition, head($dec[$key]));
+            } elseif ($key[0] === "!") {
+                $dec[$key] = str_replace('?', str_pad('?', 2 * count($condition) - 1, ',?'), $dec[$key]);
+                $query->whereRaw((string)$dec[$key], $condition);
             } else {
                 $query->whereRaw((string)$dec[$key], [$condition]);
             }
@@ -133,7 +133,7 @@ abstract class Model extends BaseModel
 
     public function scopeGbkOrder($query, string $field, string $order = 'asc')
     {
-        $query->orderBy(DB::raw('convert(`'.$field.'` using gbk)'), $order);
+        $query->orderBy(DB::raw('convert(`' . $field . '` using gbk)'), $order);
     }
 
     /**
@@ -142,7 +142,7 @@ abstract class Model extends BaseModel
      * @param $field
      * @param $value
      */
-    public function scopeFindInSet($query, $field,  $value)
+    public function scopeFindInSet($query, $field, $value)
     {
         $query->whereRaw("FIND_IN_SET(?,$field)", $value);
     }
@@ -155,6 +155,7 @@ abstract class Model extends BaseModel
      *             'eqTitle' => 'title = ?',
      *             'actor.name.eq' => 'actor.name = ?',
      *             'OrTitle' => ['or', 'title = ?'],
+     *             '!id' => '`id` in (?)' // 只有!表示in
      *         ];
      *     use query:
      *         $conditions = [
@@ -162,6 +163,7 @@ abstract class Model extends BaseModel
      *             'eqTitle' => '张三',
      *             'actor.name.eq' => '苏三',
      *             'OrTitle' => '里斯',
+     *             '!id' => [1,2,3,4],
      *         ];
      *         Model::customWhere($conditions);
      *          or
