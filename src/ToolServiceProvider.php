@@ -27,7 +27,7 @@ class ToolServiceProvider extends ServiceProvider
         $this->registerRepository();
 
         $this->publishes([
-            __DIR__ . '/stub' => base_path('stub'),
+            __DIR__ . '/stub' => base_path('stubs'),
             __DIR__ . '/Mirror/Models/Model.php' => app_path('Models/Model.php'),
             __DIR__ . '/Mirror/Services/Service.php' => app_path('Services/Service.php'),
             __DIR__ . '/Mirror/Repositories/EloquentRepository.php' => app_path('Admin/Repositories/EloquentRepository.php'),

@@ -2,6 +2,8 @@
 
 use Dcat\Admin\Form;
 use Dcat\Admin\Show;
+use Dcat\Admin\Grid;
+use Dcat\Admin\Widgets\Modal;
 
 
 if (!function_exists('setAdminImage')) {
@@ -44,5 +46,21 @@ if (!function_exists('setAdminTextarea')) {
         return $show->field($column)->unescape()->as(function () use ($column) {
             return str_replace("\n", '<br>', $this->$column);
         });
+    }
+}
+
+if (!function_exists('setActionModel')) {
+    /**
+     * 添加模态框按钮
+     * @param $show
+     * @param $column
+     * @return mixed
+     */
+    function setActionModel(Grid\Displayers\Actions $actions, $object, $title = '', $param = [], $iconClass = 'feather icon-award')
+    {
+        $actions->append(
+            Modal::make()->title($title)->body($object->payload($param))->lg()
+                ->button("<i title='$title' class='$iconClass' style='color: #4c60a3'></i>&nbsp;")
+        );
     }
 }

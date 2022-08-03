@@ -1,6 +1,6 @@
 <?php
 
-namespace ZHK\Tool\Requests\Api;
+namespace ZHK\Tool\Http\Requests\Api;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
