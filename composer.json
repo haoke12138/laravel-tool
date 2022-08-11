@@ -22,7 +22,8 @@
     "extra": {
         "laravel": {
             "providers" : [
-                "ZHK\\Tool\\ToolServiceProvider"
+                "ZHK\\Tool\\ToolServiceProvider",
+                "ZHK\\Tool\\RouterServiceProvider"
             ]
         }
     }

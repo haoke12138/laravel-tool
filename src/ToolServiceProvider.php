@@ -3,17 +3,9 @@
 namespace ZHK\Tool;
 
 use Illuminate\Support\ServiceProvider;
-use ZHK\Tool\Commands\GenerateMultiLanguageTable;
-use ZHK\Tool\Commands\TableStructureExport;
-use ZHK\Tool\Commands\ReplaceStubFile;
 
 class ToolServiceProvider extends ServiceProvider
 {
-    protected $commands = [
-        GenerateMultiLanguageTable::class,
-        TableStructureExport::class,
-        ReplaceStubFile::class,
-    ];
 
     /**
      * Register any application services.
@@ -26,14 +18,17 @@ class ToolServiceProvider extends ServiceProvider
         $this->registerService();
         $this->registerRepository();
 
-        $this->publishes([
-            __DIR__ . '/stub' => base_path('stubs'),
-            __DIR__ . '/Mirror/Models/Model.php' => app_path('Models/Model.php'),
-            __DIR__ . '/Mirror/Services/Service.php' => app_path('Services/Service.php'),
-            __DIR__ . '/Mirror/Repositories/EloquentRepository.php' => app_path('Admin/Repositories/EloquentRepository.php'),
-            __DIR__ . '/config.php' => config_path('haoke.php'),
-            __DIR__ . '/../resources/lang/zh_CN/validation.php' => base_path('resources/lang/zh_CN/validation.php'),
-        ]);
+        if ($this->app->runningInConsole()) {
+            $this->publishes([
+                __DIR__ . '/stub' => base_path('stubs'),
+                __DIR__ . '/Mirror/Models/Model.php' => app_path('Models/Model.php'),
+                __DIR__ . '/Mirror/Services/Service.php' => app_path('Services/Service.php'),
+                __DIR__ . '/Mirror/Repositories/EloquentRepository.php' => app_path('Admin/Repositories/EloquentRepository.php'),
+                __DIR__ . '/config.php' => config_path('haoke.php'),
+                __DIR__ . '/../resources/lang/zh_CN/validation.php' => base_path('resources/lang/zh_CN/validation.php'),
+            ]);
+        }
+
     }
 
     /**
@@ -43,7 +38,27 @@ class ToolServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->commands($this->commands);
+//        $this->loadJsonTranslationsFrom(__DIR__ . '/../resources/lang-json');
+//        $this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'haoke');
+
+        // 绑定中间件内核
+        $this->app->singleton(\Illuminate\Contracts\Http\Kernel::class, \ZHK\Tool\Http\Kernel::class);
+        $this->bootConsole();
+    }
+
+    /**
+     * 自动加载控制台命令
+     */
+    private function bootConsole()
+    {
+        $commands = array_filter(array_map(function ($v) {
+            if (!in_array($v, ['.', '..'])) {
+                $v = '\ZHK\Tool\Commands\\' . head(explode('.', $v));
+                return $v;
+            }
+        }, scandir(__DIR__ . '/Commands')));
+
+        $this->commands($commands);
     }
 
     private function registerModel()
@@ -185,6 +200,16 @@ class ToolServiceProvider extends ServiceProvider
             return $app["@{$slug}Repositories"] = new $class($param);
         };
     }
-    
-    
 }
+
+//if (! function_exists('trans')) {
+    /**
+     * Translate the given message.
+     *
+     * @param  string|null  $key
+     * @param  array  $replace
+     * @param  string|null  $locale
+     * @return \Illuminate\Contracts\Translation\Translator|string|array|null
+     */
+
+//}
