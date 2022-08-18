@@ -27,9 +27,11 @@ class BaseSetting
             $setting = array_filter(\Arr::dot($setting)); // 多维数组转一维, 中间用.连接
             if (!empty($setting['admin.logo-url'])) {
                 $setting['admin.logo-url'] = file_path($setting['admin.logo-url']);
+                $setting['admin.logo'] = "<img src='{$setting['admin.logo-url']}'> &nbsp;{$setting['admin.name']}";
+                $setting['admin.logo-mini'] = "<img src='{$setting['admin.logo-url']}'>";
             }
             if (!empty($setting['admin.favicon-url'])) {
-                $setting['admin.favicon-url'] = file_path($setting['admin.favicon-url']);
+                $setting['admin.favicon'] = $setting['admin.favicon-url'] = file_path($setting['admin.favicon-url']);
             }
             !empty($setting) && config($setting);
         }

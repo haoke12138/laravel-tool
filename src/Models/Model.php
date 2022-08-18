@@ -56,7 +56,10 @@ abstract class Model extends BaseModel
      */
     public function search(array $conditions, $page, $limit, $orderBy = [], $with = [])
     {
-        $list = $this->cWhere($conditions)->offset(($page - 1) * $limit)->limit($limit);
+        $list = $this->cWhere($conditions);
+        $count = $list->count();
+
+        $list = $list->offset(($page - 1) * $limit)->limit($limit);
         foreach ($orderBy as $key => $value) {
             $list->orderBy($key, $value);
         }
@@ -66,7 +69,7 @@ abstract class Model extends BaseModel
 
         return [
             'list' => $list->get(),
-            'count' => $count = $list->count(),
+            'count' => $count,
             'countPage' => ceil($count / $limit),
         ];
     }

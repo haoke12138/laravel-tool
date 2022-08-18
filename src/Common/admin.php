@@ -9,12 +9,12 @@ use Dcat\Admin\Widgets\Modal;
 if (!function_exists('setAdminImage')) {
     /**
      * 设置图片上传
-     * @param $form
+     * @param Form| $form
      * @param $column
      * @param null $required
      * @return Form\Field\Image
      */
-    function setAdminImage(Form $form, $column, $alice = '')
+    function setAdminImage($form, $column, $alice = null)
     {
         return $form->image($column, $alice)->autoUpload()->accept('jpg,png,gif,jpeg')->removable(false)->retainable();
     }
@@ -41,9 +41,9 @@ if (!function_exists('setAdminTextarea')) {
      * @param $column
      * @return Show\Field
      */
-    function setAdminTextarea(Show $show, $column)
+    function setAdminTextarea(Show $show, $column, $alice = null)
     {
-        return $show->field($column)->unescape()->as(function () use ($column) {
+        return $show->field($column, $alice)->unescape()->as(function () use ($column) {
             return str_replace("\n", '<br>', $this->$column);
         });
     }

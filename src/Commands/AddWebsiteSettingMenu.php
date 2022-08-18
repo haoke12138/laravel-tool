@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use \Exception;
 use ZHK\Tool\Common\ArrayTool;
+use ZHK\Tool\Models\Menu;
 
 class AddWebsiteSettingMenu extends Command
 {
@@ -43,11 +44,20 @@ class AddWebsiteSettingMenu extends Command
      */
     public function handle()
     {
-        DB::table('admin_menu')->where('title', 'WebsiteSetting')->delete();
+        (new Menu())->updateBatch([
+            ['id' => 1, 'title' => '首页'],
+            ['id' => 2, 'title' => '系统设置'],
+            ['id' => 3, 'title' => '管理员'],
+            ['id' => 4, 'title' => '角色'],
+            ['id' => 5, 'title' => '权限'],
+            ['id' => 6, 'title' => '菜单'],
+            ['id' => 7, 'title' => '扩展'],
+        ]);
+        Menu::where('uri', 'website-setting')->delete();
         DB::table('admin_menu')->insert([
             'parent_id' => 0,
             'order' => 20,
-            'title' => 'WebsiteSetting',
+            'title' => '网站设置',
             'icon' => 'fa-asterisk',
             'uri' => 'website-setting',
             'extension' => '',
