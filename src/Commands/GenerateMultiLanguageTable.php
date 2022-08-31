@@ -114,7 +114,7 @@ class GenerateMultiLanguageTable extends Command
             'int' => 'integer',
             'text' => 'text',
             'date' => 'date',
-            'datetime' => 'dataTime',
+            'datetime' => 'dateTime',
             'json' => 'json'
         ];
 

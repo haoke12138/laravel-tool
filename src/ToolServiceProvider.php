@@ -202,15 +202,3 @@ class ToolServiceProvider extends ServiceProvider
         };
     }
 }
-
-//if (! function_exists('trans')) {
-    /**
-     * Translate the given message.
-     *
-     * @param  string|null  $key
-     * @param  array  $replace
-     * @param  string|null  $locale
-     * @return \Illuminate\Contracts\Translation\Translator|string|array|null
-     */
-
-//}

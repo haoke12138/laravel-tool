@@ -16,7 +16,11 @@ if (!function_exists('setAdminImage')) {
      */
     function setAdminImage($form, $column, $alice = null)
     {
-        return $form->image($column, $alice)->autoUpload()->accept('jpg,png,gif,jpeg')->removable(false)->retainable();
+        return $form->image($column, $alice)->autoUpload()->accept('jpg,png,gif,jpeg')->removable(false)->retainable()
+            ->chunked()                   // 开启分块传输
+            ->chunkSize(1024 * 2)  // 设置分块传输的文件大小
+            ->threads(5)            // 设置5个线程进行传输
+            ->maxSize(1024 * 700);    // 设置最大传输大小
     }
 }
 
@@ -30,7 +34,11 @@ if (!function_exists('setAdminMultiImage')) {
      */
     function setAdminMultiImage(Form $form, $column, $alice = null)
     {
-        return $form->multipleImage($column, $alice)->autoUpload()->accept('jpg,png,gif,jpeg')->sortable();
+        return $form->multipleImage($column, $alice)->autoUpload()->accept('jpg,png,gif,jpeg')->sortable()
+            ->chunked()                   // 开启分块传输
+            ->chunkSize(1024 * 2)  // 设置分块传输的文件大小
+            ->threads(5)            // 设置5个线程进行传输
+            ->maxSize(1024 * 700);    // 设置最大传输大小
     }
 }
 
