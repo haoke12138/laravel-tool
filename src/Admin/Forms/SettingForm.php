@@ -21,6 +21,9 @@ class SettingForm extends Form
     {
         $this->text('admin.name', '网站后台名称');
         $this->text('app.name', '网站前台名称');
+        if (config('haoke.has_en')) {
+            $this->text('app.en_name', '网站前台英文名称');
+        }
         $this->textarea('app.keywords', '网站关键字');
         $this->textarea('app.desc', '网站描述信息');
         $this->image('admin.logo-url', '网站logo')

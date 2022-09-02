@@ -1,8 +1,10 @@
 <?php
 
 return [
-    'is_genderate' => env('ZHK_GENERATE', false),
+    // 判断是否为小程序
     'is_applets' => env('ZHK_APPLETS', false),
+    // 判断是否有英文版
+    'has_en' => env('ZHK_HAS_EN', false),
 
     'route' => [
         'admin' => [

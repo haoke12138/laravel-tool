@@ -2,6 +2,7 @@
 
 namespace ZHK\Tool\Admin\Controllers;
 
+use Dcat\Admin\Widgets\Card;
 use ZHK\Tool\Admin\Forms\SettingForm;
 use App\Http\Controllers\Controller;
 use Dcat\Admin\Layout\Content;
@@ -19,11 +20,7 @@ class SettingController extends Controller
         return $content
             ->title('网站设置')
             ->description(trans('admin.setting'))
-            ->body(function (Row $row) {
-                $tab = new Tab();
-                $tab->add('基本设置', new SettingForm(), true);
-                $row->column(12, $tab->withCard());
-            });
+            ->body(new Card(new SettingForm()));
     }
 
 }
