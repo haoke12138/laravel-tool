@@ -5,6 +5,31 @@ use Dcat\Admin\Show;
 use Dcat\Admin\Grid;
 use Dcat\Admin\Widgets\Modal;
 
+if (!function_exists('setAdminFile')) {
+    /**
+     * @param Form|Form\NestedForm|ToolForm $form
+     * @param $column
+     * @param null $alice
+     * @param string $extensions
+     * @return Form\Field\File
+     */
+    function setAdminVideo($form, $column, $alice = null, $extensions = 'mp4,rm,rmvb,avi', $help = '建议使用MP4的视频格式')
+    {
+        $form = $form->file($column, $alice)
+            ->autoUpload()
+            ->chunked()                   // 开启分块传输
+            ->chunkSize(1024 * 2)  // 设置分块传输的文件大小
+            ->threads(5)            // 设置5个线程进行传输
+            ->maxSize(1024 * 700)    // 设置最大传输大小
+            ->accept($extensions);
+
+        if (empty($help)) {
+            return $form;
+        }
+
+        return $form->help($help);
+    }
+}
 
 if (!function_exists('setAdminImage')) {
     /**

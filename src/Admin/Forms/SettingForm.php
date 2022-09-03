@@ -30,7 +30,9 @@ class SettingForm extends Form
             ->accept('jpg,png,gif,jpeg')->uniqueName()->autoUpload();
 
 
-        $this->file('admin.favicon-url', '网站图标')->accept('ico,jpg,png,gif,jpeg')->uniqueName()->autoUpload();
+        $this->file('admin.favicon-url', '网站图标')
+            ->help('推荐使用ico文件,仅支持ico,jpg,png,gif,jpeg')
+            ->accept('ico,jpg,png,gif,jpeg')->uniqueName()->autoUpload();
 
         if (config('haoke.is_applets')) {
             $this->divider('小程序配置');
