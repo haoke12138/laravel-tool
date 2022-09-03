@@ -28,8 +28,9 @@ class SettingForm extends Form
         $this->textarea('app.desc', '网站描述信息');
         $this->image('admin.logo-url', '网站logo')
             ->accept('jpg,png,gif,jpeg')->uniqueName()->autoUpload();
-        $this->image('admin.favicon-url', '网站图标')
-            ->accept('jpg,png,gif,jpeg')->uniqueName()->autoUpload();
+
+
+        $this->file('admin.favicon-url', '网站图标')->accept('ico,jpg,png,gif,jpeg')->uniqueName()->autoUpload();
 
         if (config('haoke.is_applets')) {
             $this->divider('小程序配置');

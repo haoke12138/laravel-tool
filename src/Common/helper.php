@@ -170,6 +170,23 @@ if (!function_exists('generateOrderSn')) {
     }
 }
 
+if (!function_exists('make_log_path')) {
+    function make_log_path($name, $level = 3)
+    {
+        $year = date('Y');
+        $month = date('m');
+        $day = date('d');
+        if ($level == 3) {
+            return "logs/refund/$year/$month/$day.log";
+        }
+        if ($level == 2) {
+            return "logs/refund/$year/$month-$day.log";
+        }
+
+        return "logs/refund/$year-$month-$day.log";
+    }
+}
+
 if (! function_exists('array_tree')) {
     /**
      * @see 完成无限级分类
