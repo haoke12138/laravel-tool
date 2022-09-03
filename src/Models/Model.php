@@ -74,6 +74,11 @@ abstract class Model extends BaseModel
         ];
     }
 
+    public function getClassname()
+    {
+        return static::class;
+    }
+
     /**
      * @param string $message
      * @return NotFoundException

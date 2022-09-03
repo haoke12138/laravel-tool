@@ -2,7 +2,7 @@
 
 namespace ZHK\Tool\Admin\Controllers;
 
-use ZHK\Tool\Admin\Repositories\Navigation;
+use App\Admin\Repositories\Navigation;
 use Dcat\Admin\Form;
 use Dcat\Admin\Grid;
 use Dcat\Admin\Show;

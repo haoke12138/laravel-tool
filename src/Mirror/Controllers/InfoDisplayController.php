@@ -5,10 +5,10 @@ namespace App\Admin\Controllers;
 use Dcat\Admin\Form;
 use Dcat\Admin\Grid;
 use Dcat\Admin\Show;
-use App\Admin\Repositories\Navigation;
-use ZHK\Tool\Admin\Controllers\NavigationController as AdminController;
+use App\Admin\Repositories\InfoDisplay;
+use ZHK\Tool\Admin\Controllers\InfoDisplayController as AdminController;
 
-class NavigationController extends AdminController
+class InfoDisplayController extends AdminController
 {
     protected function grid()
     {
