@@ -27,6 +27,7 @@ class ToolServiceProvider extends ServiceProvider
                 __DIR__ . '/config.php' => config_path('haoke.php'),
                 __DIR__ . '/../resources/lang/zh_CN/validation.php' => base_path('resources/lang/zh_CN/validation.php'),
                 __DIR__ . '/../resources/views/layout/title.blade.php' => base_path('resources/views/layout/title.blade.php'),
+                __DIR__ . '/../resources/views/layout/map.blade.php' => base_path('resources/views/layout/map.blade.php'),
             ]);
         }
 
