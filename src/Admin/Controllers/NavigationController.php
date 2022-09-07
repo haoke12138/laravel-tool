@@ -81,6 +81,10 @@ class NavigationController extends AdminController
                 $form->text('slug')->required()->rules('string|max: 50');
                 setAdminImage($form, 'image')->required();
                 setAdminImage($form, 'mobile_image')->required();
+                $form->embeds('banner_info', '', function (Form\EmbeddedForm $form) {
+                    $form->text('banner_title', 'banner标题');
+                    $form->textarea('banner_subtitle', 'banner副标题');
+                });
                 $form->select('parent_id')->options(model('Navigation')->selectOptions())->default(0);
                 $form->url('link');
                 $form->switch('is_external_link')->default(0);

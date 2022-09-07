@@ -7,7 +7,7 @@ use Dcat\Admin\Widgets\Modal;
 
 if (!function_exists('setAdminFile')) {
     /**
-     * @param Form|Form\NestedForm|ToolForm $form
+     * @param Form|Form\NestedForm|ToolForm|Form\EmbeddedForm $form
      * @param $column
      * @param null $alice
      * @param string $extensions
@@ -34,7 +34,7 @@ if (!function_exists('setAdminFile')) {
 if (!function_exists('setAdminImage')) {
     /**
      * 设置图片上传
-     * @param Form| $form
+     * @param Form|Form\NestedForm|ToolForm|Form\EmbeddedForm $form
      * @param $column
      * @param null $required
      * @return Form\Field\Image
@@ -52,12 +52,12 @@ if (!function_exists('setAdminImage')) {
 if (!function_exists('setAdminMultiImage')) {
     /**
      * 设置多图上传
-     * @param $form
+     * @param Form|Form\NestedForm|ToolForm|Form\EmbeddedForm $form
      * @param $column
      * @param null $required
      * @return Form\Field\MultipleImage
      */
-    function setAdminMultiImage(Form $form, $column, $alice = null)
+    function setAdminMultiImage($form, $column, $alice = null)
     {
         return $form->multipleImage($column, $alice)->autoUpload()->accept('jpg,png,gif,jpeg')->sortable()
             ->chunked()                   // 开启分块传输

@@ -19,6 +19,7 @@ class CreateNavigationsTable extends Migration
             $table->string('slug')->default('');
             $table->text('image')->nullable();
             $table->text('mobile_image')->nullable();
+            $table->longText('banner_info')->nullable();
             $table->integer('parent_id')->default('0');
             $table->text('link')->nullable();
             $table->integer('order')->default('100');

@@ -13,3 +13,4 @@
     <meta name="Keywords" content="{{ $current['tdk']['KEYWORD'] ?? config('app.keywords') }}">
     <meta name="Description" content="{{ $current['tdk']['DESC'] ?? config('app.desc') }}">
 @endif
+<link rel="shortcut icon" href="{{ config('admin.favicon-url') }}">

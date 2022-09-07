@@ -28,7 +28,7 @@ abstract class Model extends BaseModel
      */
     public function getValue($conditions, $name = 'title')
     {
-        $v = $this->where($conditions)->value($name);
+        $v = $this->cwhere($conditions)->value($name);
 
         return isset($v) ? $v : '';
     }
@@ -42,7 +42,7 @@ abstract class Model extends BaseModel
      */
     public function getOptions($conditions = [], $key = 'id', $value = 'title')
     {
-        return $this->where($conditions)->pluck($value, $key);
+        return $this->cwhere($conditions)->pluck($value, $key);
     }
 
     /**
