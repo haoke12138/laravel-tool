@@ -14,8 +14,9 @@ if (!function_exists('array_parts')) {
 }
 
 if (!function_exists('member')) {
-    function member($request)
+    function member($request = null)
     {
+        $request = empty($request) ? request(): $request;
         return json_decode($request->attributes->get('member'));
     }
 }
@@ -94,28 +95,41 @@ if (! function_exists('file_path')) {
 }
 
 if (!function_exists('link_path')) {
-    function link_path($link)
+    function link_path($link = null)
     {
-        return empty($link) ? 'javascript:;' : $link;
+        if (empty($link)) {
+            return 'javascript:;';
+        }
+        return in_array(substr($link, 0, 5), ['https', 'http:']) ? $link : asset($link);
     }
 }
 
 if (!function_exists('page_desc')) {
-    function page_desc($str)
+    function page_desc($str, $replace = '<br>')
     {
-        $str = str_replace("\n", '<br>', $str, $count);
+        $str = str_replace("\n", $replace, $str, $count);
         if (!$count) {
-            $str = str_replace("\r", '<br>', $str, $count);
+            $str = str_replace("\r", $replace, $str, $count);
         }
 
         return $str;
     }
 }
 
-if (!function_exists('verify_code')) {
-    function verify_code()
+if (!function_exists('generateVerifyCode')) {
+    /**
+     * 生成验证码
+     * @param string $prefix
+     * @return string
+     */
+    function generateVerifyCode($prefix = '', $count = 16)
     {
-        return mt_rand(100000, 999999);
+        if ($count > 6) {
+            $count = $count - 6;
+            $prefix =  $prefix . date('YmdHis', time());
+        }
+
+        return $prefix . mt_rand(str_pad(1, $count, 0), str_pad(9, $count, 9));
     }
 }
 
@@ -195,8 +209,11 @@ if (! function_exists('array_tree')) {
      * @param int $id
      * @return array
      */
-    function array_tree($array, $key='parent_id', $id = 0, $orderBy = 'order', $sortType = SORT_DESC)
+    function array_tree($array, $key='parent_id', $id = 0, $orderBy = 'order', $sortType = SORT_ASC)
     {
+        if ($array instanceof Illuminate\Support\Collection && function_exists('collect_tree')) {
+            return collect_tree($array, $key, $id, $orderBy, $sortType);
+        }
         // 排序
         array_multisort(array_column($array, $orderBy), $sortType, $array); // 根据$orderBy数组进行排序
 
@@ -211,6 +228,7 @@ if (! function_exists('array_tree')) {
         return array_values($newArray);
     }
 }
+
 
 if (!function_exists('crossJoin')) {
     /**
@@ -265,7 +283,7 @@ if(!function_exists('password_hash')) {
 }
 
 #验证密码是否正确
-if(!function_exists('password_hash')) {
+if(!function_exists('password_verify')) {
     function password_verify($password,$hash)
     {
         if(sha1($password)==$hash){

@@ -1,5 +1,42 @@
 <?php
 
+use \Illuminate\Support\Collection;
+if (! function_exists('collect_tree')) {
+    /**
+     * @see 完成无限级分类
+     * @param $array
+     * @param string $key
+     * @param int $id
+     * @return array
+     */
+    function collect_tree(Collection $array, $key='parent_id', $id = 0, $orderBy = 'order', $sortType = SORT_ASC)
+    {
+        $array = $array->sortBy($orderBy, SORT_REGULAR, $sortType == SORT_DESC); // desending 是 true时为倒序
+
+        $newArray = $filterArray = $array->filter(function ($a) use($key, $id) {
+            return $a[$key] == $id;
+        });
+
+        foreach ($filterArray as $k => $filter) {
+            $newArray[$k]['child'] = collect_tree($array, $key, $filter['id'], $orderBy, $sortType);
+        }
+
+        return $newArray->values();
+    }
+}
+
+if (!function_exists('get_navigate_set')) {
+    /**
+     * @see 获取导航栏
+     * @return array
+     */
+    function get_navigate_set()
+    {
+        $nar = model('Navigation')->where('enable', 1)->get();
+        return collect_tree($nar, 'parent_id');
+    }
+}
+
 if (!function_exists('get_navigate')) {
     /**
      * @see 获取导航栏
