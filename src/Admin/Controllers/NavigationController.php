@@ -86,8 +86,11 @@ class NavigationController extends AdminController
                     $form->textarea('banner_subtitle', 'banner副标题');
                 });
                 $form->select('parent_id')->options(model('Navigation')->selectOptions())->default(0);
-                $form->url('link');
-                $form->switch('is_external_link')->default(0);
+                $form->radio('is_external_link')->options(['否', '是'])->when(1, function (Form $form) {
+                    $form->url('external_link');
+                })->when(0, function (Form $form) {
+                    $form->text('link');
+                })->default(0);
                 $form->number('order')->default(100);
                 $form->switch('enable')->default(1);
 

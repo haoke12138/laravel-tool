@@ -14,6 +14,7 @@ return [
         'order' => '排序',
         'tdk' => 'TDK',
         'is_external_link' => '是否为外链',
+        'external_link' => '外链',
         'enable' => '是否可用',
     ],
     'options' => [
