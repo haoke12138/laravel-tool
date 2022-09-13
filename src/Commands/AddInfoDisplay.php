@@ -5,6 +5,7 @@ namespace ZHK\Tool\Commands;
 use App\Models\Model;
 use Illuminate\Console\Command;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use \Exception;
@@ -74,18 +75,18 @@ class AddInfoDisplay extends Command
 
         // 添加访问路由
         if ($this->option('link')) {
-            $route = json_decode(file_get_contents(__DIR__ . '/../../routes/router.json'), true);
-            $route['admin']['info-display'] = [
-                'uri' => $uri,
-                'method' => 'resource',
-                'controller' => 'InfoDisplayController'
-            ];
-            $route['admin']['info-display-type'] = [
-                'uri' => "$uri-type",
-                'method' => 'resource',
-                'controller' => 'InfoDisplayTypeController'
-            ];
-            file_put_contents(__DIR__ . '/../../routes/router.json', json_encode($route, 256));
+            write_route(function (&$route) use ($uri) {
+                $route['admin']['info-display'] = [
+                    'uri' => $uri,
+                    'method' => 'resource',
+                    'controller' => 'InfoDisplayController'
+                ];
+                $route['admin']['info-display-type'] = [
+                    'uri' => "$uri-type",
+                    'method' => 'resource',
+                    'controller' => 'InfoDisplayTypeController'
+                ];
+            });
         }
 
         // 镜像文件复制
@@ -102,7 +103,7 @@ class AddInfoDisplay extends Command
         app('files')->copy(__DIR__ . '/../../database/migrations/2022_08_11_150641_create_info_display_type_table.php', base_path('database/migrations/2022_08_11_150641_create_info_display_type_table.php'));
 
         // 执行migrate
-        exec('php artisan migrate');
+        Artisan::call('migrate');
     }
 
 }

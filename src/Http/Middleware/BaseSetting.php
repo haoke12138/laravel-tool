@@ -3,7 +3,6 @@
 namespace ZHK\Tool\Http\Middleware;
 
 use Closure;
-use Illuminate\Support\Facades\Route;
 
 class BaseSetting
 {
@@ -16,6 +15,11 @@ class BaseSetting
      */
     public function handle($request, Closure $next)
     {
+        // 判断是否在后台
+        if (head(array_filter(explode('/', $request->getRequestUri()))) === head(array_filter(explode('/', admin_base_path())))) {
+            // TODO: 后续补全, 目前没想到需要设置什么
+        }
+
         // 依赖dcat-admin的admin操作
         if (function_exists('admin_setting')) {
             $setting = admin_setting()->toArray();

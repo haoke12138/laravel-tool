@@ -87,3 +87,26 @@ if (!function_exists('get_parent_slug')) {
         return model('Navigation')->where('id', $parentId)->value('slug');
     }
 }
+
+if (!function_exists('write_route')) {
+    /**
+     * 写入路由
+     *
+     * @return mixed
+     */
+    function write_route($closure)
+    {
+        // 添加访问路由
+        $file = base_path('router.json');
+        if (!function_exists($file)) {
+            file_put_contents($file, '[]');
+        }
+
+        $route = json_decode(file_get_contents($file, true));
+
+        $v = $closure($route);
+        $route = $v && is_array($v) ? $v : $route;
+
+        file_put_contents($file, json_encode($route, 256));
+    }
+}

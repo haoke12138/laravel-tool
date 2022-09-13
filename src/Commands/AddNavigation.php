@@ -5,6 +5,7 @@ namespace ZHK\Tool\Commands;
 use App\Models\Model;
 use Illuminate\Console\Command;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use \Exception;
@@ -59,13 +60,13 @@ class AddNavigation extends Command
         ]);
 
         // 添加访问路由
-        $route = json_decode(file_get_contents(__DIR__ . '/../../routes/router.json'), true);
-        $route['admin']['navigation'] = [
-            'uri' => $uri,
-            'method' => 'resource',
-            'controller' => 'NavigationController'
-        ];
-        file_put_contents(__DIR__ . '/../../routes/router.json', json_encode($route, 256));
+        write_route(function (&$route) use ($uri) {
+            $route['admin']['navigation'] = [
+                'uri' => $uri,
+                'method' => 'resource',
+                'controller' => 'NavigationController'
+            ];
+        });
 
         // 镜像文件复制
         app('files')->copy(__DIR__ . '/../Mirror/Controllers/NavigationController.php', admin_path('Controllers/NavigationController.php'));
@@ -75,7 +76,7 @@ class AddNavigation extends Command
         app('files')->copy(__DIR__ . '/../../database/migrations/2022_06_29_114005_create_navigations_table.php', base_path('database/migrations/2022_06_29_114005_create_navigations_table.php'));
 
         // 执行migrate
-        exec('php artisan migrate');
+        Artisan::call('migrate');
     }
 
 }
