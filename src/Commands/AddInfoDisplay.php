@@ -101,6 +101,7 @@ class AddInfoDisplay extends Command
 
         app('files')->copy(__DIR__ . '/../../database/migrations/2022_07_05_134819_create_info_display_table.php', base_path('database/migrations/2022_07_05_134819_create_info_display_table.php'));
         app('files')->copy(__DIR__ . '/../../database/migrations/2022_08_11_150641_create_info_display_type_table.php', base_path('database/migrations/2022_08_11_150641_create_info_display_type_table.php'));
+        app('files')->copy(__DIR__ . '/../../database/migrations/2022_09_27_181043_add_order_to_info_display.php', base_path('database/migrations/2022_09_27_181043_add_order_to_info_display.php'));
 
         // 执行migrate
         Artisan::call('migrate');
