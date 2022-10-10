@@ -60,8 +60,7 @@ class AddDatabase extends Command
         exec("mysql -uroot -e 'CREATE DATABASE `$database` DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci'");
         exec("mysql -uroot -e \"create user '$username'@'localhost' identified by '$password';\"");
         exec("mysql -uroot -e 'grant all on $database.* to $username@localhost;'");
-        $this->error("数据库和用户已经添加完成!");
-
+        $this->info("数据库和用户已经添加完成!");
     }
 
 }
