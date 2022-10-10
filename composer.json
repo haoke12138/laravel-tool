@@ -6,6 +6,7 @@
             "email": "1613048203@qq.com"
         }
     ],
+    "license": "MIT",
     "require": {
         "php": "7.*"
     },
