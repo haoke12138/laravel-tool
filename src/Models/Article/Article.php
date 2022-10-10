@@ -25,12 +25,7 @@ class Article extends Model
             return $this->next;
         }
 
-        return $this->next = $this->where('article_type', $type)->where($prefix . 'article.id', '>', $this->id)->first();
-    }
-
-    public function getHome($type = 'news', $limit = 3)
-    {
-        return $this->whereIn('category_id', $ids)->where('article_type', $type)->latest('published_time')->limit($limit)->get();
+        return $this->next = $this->where('article_type', $type)->where('article.id', '>', $this->id)->first();
     }
 
     public function getDate()
@@ -41,20 +36,6 @@ class Article extends Model
     public function category()
     {
         return $this->belongsTo(Category::class, 'category_id', 'id');
-    }
-
-    public function moreArticles($cateId, $limit = 6, $type = null)
-    {
-        $article = $this->where('category_id', $cateId)->orderBy('order')->orderBy('created_at', 'desc')->limit($limit);
-        if ($type) {
-            $article = $article->where('type', $type);
-        }
-        return $article->get();
-    }
-
-    public function topArticles($type = 'news', $limit = 10)
-    {
-        return $this->orderBy('order')->latest('published_time')->where('type', $type)->limit($limit)->get();
     }
 
     public function searchArticles($request)
