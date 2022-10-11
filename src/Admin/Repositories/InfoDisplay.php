@@ -3,6 +3,7 @@
 namespace ZHK\Tool\Admin\Repositories;
 
 use App\Models\InfoDisplay as Model;
+use App\Admin\Repositories\EloquentRepository as EloquentRepository;
 use Dcat\Admin\Form;
 
 class InfoDisplay extends EloquentRepository

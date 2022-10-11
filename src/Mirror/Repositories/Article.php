@@ -21,6 +21,9 @@ class Article extends EloquentRepository
                 $form->updates(['article_type' => $cate->type]);
             }
         }
-        $this->setThumbnailInfo($form);
+        if (is_null($form->input('desc'))) {
+            $form->updates(['desc' => '']);
+        }
+//        $this->setThumbnailInfo($form);
     }
 }

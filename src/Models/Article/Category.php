@@ -2,7 +2,7 @@
 
 namespace ZHK\Tool\Models\Article;
 
-use ZHK\Tool\Models\Model;
+use App\Models\Model;
 
 class Category extends Model
 {
@@ -10,7 +10,7 @@ class Category extends Model
 
     public function article()
     {
-        return $this->hasMany(Article::class);
+        return $this->hasMany(model('Article')->getClassname());
     }
 
     public function getByType($type)

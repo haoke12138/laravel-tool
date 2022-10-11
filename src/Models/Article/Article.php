@@ -2,7 +2,7 @@
 
 namespace ZHK\Tool\Models\Article;
 
-use ZHK\Tool\Models\Model;
+use App\Models\Model;
 
 class Article extends Model
 {
@@ -35,7 +35,7 @@ class Article extends Model
 
     public function category()
     {
-        return $this->belongsTo(Category::class, 'category_id', 'id');
+        return $this->belongsTo(model('Category')->getClassname(), 'category_id', 'id');
     }
 
     public function searchArticles($request)

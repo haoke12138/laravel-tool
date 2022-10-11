@@ -2,6 +2,8 @@
 
 namespace ZHK\Tool\Models;
 
+use App\Models\Model;
+
 class InfoDisplay extends Model
 {
     public $prev, $next;

@@ -57,7 +57,7 @@ class ArticleController extends AdminController
             $show->field('source');
             $show->field('author');
             $show->field('category.title');
-            $show->field('desc');
+            setAdminTextarea($show, 'desc');
             $show->field('content')->unescape();
             $show->field('thumbnail')->image();
             $show->field('created_at', '创建时间');
@@ -80,7 +80,7 @@ class ArticleController extends AdminController
                 $form->image('thumbnail')->autoUpload()->required()->accept('jpg,png,gif,jpeg')->removable(false)->retainable();
                 $form->text('source')->default(session('app.locale') == 'en' ? 'This Site' : '本站');
                 $form->text('author')->default(session('app.locale') == 'en' ? 'Anonymous' : '佚名');
-                $form->textarea('desc')->rules('string|max: 255');
+                $form->textarea('desc')->rules('max: 255');
                 $form->hidden('article_type')->value('news');
 //                $form->hidden('type')->default('0');
                 $form->radio('type')->options(['否', '是'])->required()->when(1, function ($form) {

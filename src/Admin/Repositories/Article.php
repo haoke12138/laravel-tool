@@ -16,8 +16,10 @@ class Article extends EloquentRepository
 
     public function setThumbnailInfo(Form $form)
     {
-        $imageInfo = GetImageSize(public_path('storage/' . $form->thumbnail));
-        $form->width = $imageInfo[0];
-        $form->height = $imageInfo[1];
+        if ($form->thumbnail) {
+            $imageInfo = GetImageSize(public_path('storage/' . $form->thumbnail));
+            $form->width = $imageInfo[0];
+            $form->height = $imageInfo[1];
+        }
     }
 }

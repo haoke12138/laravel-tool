@@ -2,6 +2,7 @@
 
 namespace ZHK\Tool\Admin\Repositories;
 
+use App\Admin\Repositories\EloquentRepository as EloquentRepository;
 use App\Models\Article\Category as Model;
 use Dcat\Admin\Form;
 
