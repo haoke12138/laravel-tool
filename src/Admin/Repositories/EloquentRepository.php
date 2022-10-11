@@ -69,4 +69,21 @@ class EloquentRepository extends BaseRepository
     {
 
     }
+
+    /**
+     * 设置后台不填数据为空字符串
+     * @param Form $form
+     * @param $columns
+     */
+    protected function setNullString(Form $form, $columns)
+    {
+        $columns = is_array($columns) ? $columns : [$columns];
+        $fields = [];
+        foreach ($columns as $column) {
+            if (is_null($form->input($column))) {
+                $fields[$column] = '';
+            }
+        }
+        $form->updates($fields);
+    }
 }
