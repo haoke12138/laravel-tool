@@ -7,7 +7,7 @@ use Dcat\Admin\Widgets\Modal;
 
 if (!function_exists('setAdminFile')) {
     /**
-     * @param Form|Form\NestedForm|ToolForm|Form\EmbeddedForm $form
+     * @param Form|Form\NestedForm|Form\EmbeddedForm|Dcat\Admin\Widgets\Form|\Dcat\Admin\Form\Row $form
      * @param $column
      * @param null $alice
      * @param string $extensions
@@ -34,7 +34,7 @@ if (!function_exists('setAdminFile')) {
 if (!function_exists('setAdminImage')) {
     /**
      * 设置图片上传
-     * @param Form|Form\NestedForm|ToolForm|Form\EmbeddedForm $form
+     * @param Form|Form\NestedForm|Form\EmbeddedForm|Dcat\Admin\Widgets\Form|\Dcat\Admin\Form\Row $form
      * @param $column
      * @param null $required
      * @return Form\Field\Image
@@ -52,7 +52,7 @@ if (!function_exists('setAdminImage')) {
 if (!function_exists('setAdminMultiImage')) {
     /**
      * 设置多图上传
-     * @param Form|Form\NestedForm|ToolForm|Form\EmbeddedForm $form
+     * @param Form|Form\NestedForm|Form\EmbeddedForm|Dcat\Admin\Widgets\Form|\Dcat\Admin\Form\Row $form
      * @param $column
      * @param null $required
      * @return Form\Field\MultipleImage

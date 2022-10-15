@@ -20,7 +20,7 @@ class CreateInfoDisplayTable extends Migration
             $table->text('icon')->nullable()->comment('icon图');
             $table->text('desc')->nullable()->comment('简介');
             $table->text('link')->nullable()->comment('外链');
-            $table->string('file')->nullable()->comment('文件');
+            $table->string('files')->nullable()->comment('文件');
             $table->longText('other_info')->nullable()->comment('其他信息');
             $table->json('json_info')->nullable()->comment('json信息');
             $table->integer('category_id')->default(0)->comment('分类id');

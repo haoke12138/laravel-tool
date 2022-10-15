@@ -28,7 +28,7 @@ class InfoDisplayController extends AdminController
             $grid->column('icon')->image('', 50);
             $grid->column('desc', '简介');
             $grid->column('link', '链接');
-            $grid->column('file', '文件');
+            $grid->column('files', '文件');
             $grid->column('other_info', '其他信息');
             $grid->column('json_info', 'json信息');
             $grid->column('category_id', '所属分类');
@@ -58,7 +58,7 @@ class InfoDisplayController extends AdminController
             $show->field('icon')->image();
             $show->field('desc', '简介');
             $show->field('link', '链接');
-            $show->field('file', '文件')->file();
+            $show->field('files', '文件')->file();
             $show->field('other_info', '其他信息');
             $show->field('json_info', 'json信息');
             $show->field('category_id', '所属分类');
@@ -81,7 +81,7 @@ class InfoDisplayController extends AdminController
             setAdminImage($form, 'icon')->required();
             $form->textarea('desc', '简介');
             $form->url('link', '链接');
-            setAdminVideo($form, 'file', '文件')->required();
+            setAdminVideo($form, 'files', '文件')->required();
             $form->editor('other_info', '其他信息');
             $form->list('json_info', 'json信息');
             $form->select('category_id', '所属分类')->options(model('InfoDisplayType')->getOptions());
