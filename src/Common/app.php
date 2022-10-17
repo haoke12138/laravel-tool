@@ -59,15 +59,18 @@ if (!function_exists('get_current_page')) {
      */
     function get_current_page($slug)
     {
-        $slugName = explode('.', $slug);
-        $nar = model('Navigation')->where('slug', head($slugName))->orderBy('order')->first();
+        $nar = model('Navigation')->where('slug', $slug)->orderBy('order')->first();
+        if (empty($nar)) {
+            $slugName = explode('.', $slug);
+            $nar = model('Navigation')->where('slug', head($slugName))->orderBy('order')->first();
+        }
         if (!empty($nar)) {
             $nar['father'] = $nar['parent_id'] != 0 ? model('Navigation')->where('id', $nar['parent_id'])->value('title') : '';
             $nar['fatherSlug'] = $nar['parent_id'] != 0 ? model('Navigation')->where('id', $nar['parent_id'])->value('slug') : '';
-            $nar['fatherLink'] = $nar['parent_id'] != 0 ? model('Navigation')->where('id', $nar['parent_id'])->value('link') : '';
+            $nar['fatherLink'] = $nar['parent_id'] != 0 ? model('Navigation')->where('id', $nar['parent_id'])->first()->getLink() : '';
         }
 
-        return empty($nar) ? [] : $nar;
+        return empty($nar) ? collect() : $nar;
     }
 }
 

@@ -16,7 +16,7 @@ class Article extends Model
         if ($this->prev) {
             return $this->prev;
         }
-        return $this->prev = $this->where('article_type', $type)->latest('id')->first();
+        return $this->prev = $this->where('article_type', $type)->where('article.id', '<', $this->id)->latest('id')->first();
     }
 
     public function nexts($type = 'news')
