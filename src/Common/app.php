@@ -70,7 +70,7 @@ if (!function_exists('get_current_page')) {
             $nar['fatherLink'] = $nar['parent_id'] != 0 ? model('Navigation')->where('id', $nar['parent_id'])->first()->getLink() : '';
         }
 
-        return empty($nar) ? collect() : $nar;
+        return empty($nar) ? [] : $nar;
     }
 }
 

@@ -303,3 +303,26 @@ if(!function_exists('password_verify')) {
         return false;
     }
 }
+
+/**
+ * 仿laravel 断点
+ */
+if (!function_exists('dd')) {
+    function dd(...$args) {
+        echo '<pre>';
+        var_dump(...$args);
+        echo '</pre>';
+        exit();
+    }
+}
+
+/**
+ * 仿laravel 打印
+ */
+if (!function_exists('dump')) {
+    function dump(...$args) {
+        echo '<pre>';
+        var_dump(...$args);
+        echo '</pre>';
+    }
+}

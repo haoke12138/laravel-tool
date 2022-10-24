@@ -1,3 +1,6 @@
 /vendor/
 .vscode/
 .idea/
+
+# mac 桌面服务储存
+*.DS_Store
