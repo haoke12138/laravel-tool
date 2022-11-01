@@ -19,14 +19,14 @@ class AddArticle extends Command
      *
      * @var string
      */
-    protected $signature = 'zhk:add_article {--visit} {--link}';
+    protected $signature = 'zhk:add_article';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = "添加文章模块 --visit 添加菜单栏链接, --link 添加访问链接";
+    protected $description = "添加文章模块";
 
     /**
      * Create a new command instance.

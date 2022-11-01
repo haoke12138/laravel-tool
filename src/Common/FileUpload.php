@@ -6,6 +6,13 @@ class FileUpload
 {
     private $file = null;
     private $basePath = null;
+    private $filepath = null;
+    public $extensions = [
+        'image' => ['jpeg', 'jpg', 'png', 'gif', 'bmp'],
+        'video' => ['mp4', 'avi', 'rm', 'rmvp', 'wmv', 'm4v', 'mov', '3gp'],
+        'office' => ['csv', 'doc', 'docx', 'pdf', 'xlsx', 'xls', 'ppt', 'pptx'],
+        'compress' => ['zip', 'rar', '7z']
+    ];
 
     public static function make($isPublic = false)
     {
@@ -35,28 +42,25 @@ class FileUpload
      */
     public function image($name = 'images', $options = [])
     {
-        $extension = pathinfo($this->file['name'])['extension'];
+        return $this->file($name, $options, 'image');
+    }
 
-        $extensions = ['jpeg', 'jpg', 'png', 'gif', 'bmp'];
+    /**
+     * @param $type 归类名称 默认为images
+     * @param array $options 文件类型 默认为常用图片,视频,压缩包,办公格式
+     * @param null $extensionName 格式类型, 当前有image, video, office, compress
+     * @return string
+     * @throws \Exception
+     */
+    public function file($type, $options = [], $extensionName = null)
+    {
+        $extension = pathinfo($this->file['name'])['extension'];
+        $extensions = empty($extensionName) ? array_merge(...array_values($this->extensions)) : $this->extensions[$extensionName];
         $extensions = empty($options) ? $extensions : array_intersect($extensions, $options);
         if (!in_array($extension, $extensions)) {
             throw new \Exception('上传文件类型不正确, 请检查文件是否是以下类型' . join(',', $extensions));
         }
-
-        return $this->save("$this->basePath/$name/", $extension, $name);
-    }
-
-    /**
-     * @param string $type 归类名称
-     * @return mixed|string
-     * @throws \Exception
-     */
-    public function file($type)
-    {
-        $extension = pathinfo($this->file['name'])['extension'];
-        $path = $this->save($this->basePath, $extension, $type);
-
-        return count(explode($type, $this->basePath)) > 1 ? $path : last(explode($type, $path));
+        return $this->save("$this->basePath/$type/", $extension, $type);
     }
 
     private function save($basePath, $extension, $name)

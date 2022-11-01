@@ -2,8 +2,12 @@
 
 namespace ZHK\Tool\Admin\Forms;
 
-class MapForm extends SettingForm
+use Dcat\Admin\Widgets\Form;
+
+class MapForm extends Form
 {
+    use Setting;
+
     public function form()
     {
         $this->text('admin.map.keys.baidu', '百度AK')->help('百度AK可以在百度地图开放平台申请');

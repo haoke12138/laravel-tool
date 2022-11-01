@@ -112,3 +112,28 @@ if (!function_exists('write_route')) {
         file_put_contents($file, json_encode($route, 256));
     }
 }
+
+if (!function_exists('return_api')) {
+    /**  api返回
+     * @param Closure $closure 形参obj对象属性有 data 返回参数, msg 返回信息, request 请求, code 状态码
+     * @param \Illuminate\Http\Request $request
+     * @param int $code
+     * @return \Illuminate\Http\JsonResponse 返回参数 code 回执码 正常为200, [ msg 返回信息, data 返回参数 ]
+     */
+    function return_api(\Closure $closure, \Illuminate\Http\Request $request, int $code = 200)
+    {
+        $request = empty($request) ? request() : $request;
+       $obj =  new \ZHK\Tool\Common\Object_(['data' => null, 'msg' => null, 'request' => $request, 'code' => $code]);
+        try {
+            $closure($obj);
+            $res = ['code' => 200];
+            if (isset($obj->data)) $res['data'] = $obj->data;
+            if (isset($obj->msg)) $res['msg'] = $obj->msg;
+        } catch (\Exception $e) {
+            $res = ['code' => $e->getCode() ? $e->getCode() : 500, 'msg' => $e->getMessage()];
+        }
+
+        return response()->json($res, $obj->code);
+    }
+}
+
