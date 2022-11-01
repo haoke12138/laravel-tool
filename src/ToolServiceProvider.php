@@ -24,6 +24,7 @@ class ToolServiceProvider extends ServiceProvider
                 __DIR__ . '/Mirror/Models/Model.php' => app_path('Models/Model.php'),
                 __DIR__ . '/Mirror/Services/Service.php' => app_path('Services/Service.php'),
                 __DIR__ . '/Mirror/Repositories/EloquentRepository.php' => app_path('Admin/Repositories/EloquentRepository.php'),
+                __DIR__ . '/Mirror/Common/Tool.php' => app_path('Common/Tool.php'),
                 __DIR__ . '/config.php' => config_path('haoke.php'),
                 __DIR__ . '/../resources/lang/zh_CN/validation.php' => base_path('resources/lang/zh_CN/validation.php'),
                 __DIR__ . '/../resources/views/layout/title.blade.php' => base_path('resources/views/layout/title.blade.php'),
