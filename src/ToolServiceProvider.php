@@ -6,6 +6,29 @@ use Illuminate\Support\ServiceProvider;
 
 class ToolServiceProvider extends ServiceProvider
 {
+    static $filepath = [];
+
+    /**
+     * Create a new service provider instance.
+     *
+     * @param  \Illuminate\Contracts\Foundation\Application  $app
+     * @return void
+     */
+    public function __construct($app)
+    {
+        $this->app = $app;
+        static::$filepath = [
+            __DIR__ . '/stubs' => base_path('stubs'),
+            __DIR__ . '/Mirror/Models/Model.php' => app_path('Models/Model.php'),
+            __DIR__ . '/Mirror/Services/Service.php' => app_path('Services/Service.php'),
+            __DIR__ . '/Mirror/Repositories/EloquentRepository.php' => app_path('Admin/Repositories/EloquentRepository.php'),
+            __DIR__ . '/Mirror/Common/Tool.php' => app_path('Common/Tool.php'),
+            __DIR__ . '/config.php' => config_path('haoke.php'),
+            __DIR__ . '/../resources/lang/zh_CN/validation.php' => base_path('resources/lang/zh_CN/validation.php'),
+            __DIR__ . '/../resources/views/layout/title.blade.php' => base_path('resources/views/layout/title.blade.php'),
+            __DIR__ . '/../resources/views/layout/map.blade.php' => base_path('resources/views/layout/map.blade.php'),
+        ];
+    }
 
     /**
      * Register any application services.
@@ -18,17 +41,7 @@ class ToolServiceProvider extends ServiceProvider
         new \ZHK\Tool\Common\Dbu(app());
 
         if ($this->app->runningInConsole()) {
-            $this->publishes([
-                __DIR__ . '/stubs' => base_path('stubs'),
-                __DIR__ . '/Mirror/Models/Model.php' => app_path('Models/Model.php'),
-                __DIR__ . '/Mirror/Services/Service.php' => app_path('Services/Service.php'),
-                __DIR__ . '/Mirror/Repositories/EloquentRepository.php' => app_path('Admin/Repositories/EloquentRepository.php'),
-                __DIR__ . '/Mirror/Common/Tool.php' => app_path('Common/Tool.php'),
-                __DIR__ . '/config.php' => config_path('haoke.php'),
-                __DIR__ . '/../resources/lang/zh_CN/validation.php' => base_path('resources/lang/zh_CN/validation.php'),
-                __DIR__ . '/../resources/views/layout/title.blade.php' => base_path('resources/views/layout/title.blade.php'),
-                __DIR__ . '/../resources/views/layout/map.blade.php' => base_path('resources/views/layout/map.blade.php'),
-            ]);
+            $this->publishes(static::$filepath);
         }
 
     }

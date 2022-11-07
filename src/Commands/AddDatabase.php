@@ -45,22 +45,12 @@ class AddDatabase extends Command
      */
     public function handle()
     {
-        $database = env('DB_DATABASE');
-        if (empty($database)) {
-            $this->error(".env 文件中 DB_DATABASE 未设置");
+        try {
+            service('ZHK.Tool:Init')->initDatabase();
+            $this->info("完成!");
+        } catch (\Exception $e) {
+            $this->error($e->getMessage());
         }
-        $username = env('DB_USERNAME');
-        if (empty($username)) {
-            $this->error(".env 文件中 DB_USERNAME 未设置");
-        }
-        $password = env('DB_PASSWORD');
-        if (empty($password)) {
-            $this->error(".env 文件中 DB_PASSWORD 未设置");
-        }
-        exec("mysql -uroot -e 'CREATE DATABASE `$database` DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci'");
-        exec("mysql -uroot -e \"create user '$username'@'localhost' identified by '$password';\"");
-        exec("mysql -uroot -e 'grant all on $database.* to $username@localhost;'");
-        $this->info("数据库和用户已经添加完成!");
     }
 
 }

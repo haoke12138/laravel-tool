@@ -5,26 +5,28 @@ namespace ZHK\Tool\Commands;
 use App\Models\Model;
 use Illuminate\Console\Command;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use \Exception;
 use ZHK\Tool\Common\ArrayTool;
+use ZHK\Tool\Models\Menu;
 
-class ReplaceStubFile extends Command
+class Init extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'zhk:replace_stub_file';
+    protected $signature = 'zhk:init {--sql}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = "替换存根文件";
+    protected $description = "初始化操作 --sql 是否";
 
     /**
      * Create a new command instance.
@@ -44,8 +46,8 @@ class ReplaceStubFile extends Command
     public function handle()
     {
         try {
-            service('ZHK.Tool:Init')->replaceStubFile();
-            $this->info("dcat存根文件已完成替换");
+            service('ZHK.Tool:Init')->init();
+            $this->info("完成!");
         } catch (\Exception $e) {
             $this->error($e->getMessage());
         }

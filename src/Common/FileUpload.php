@@ -46,7 +46,7 @@ class FileUpload
     }
 
     /**
-     * @param $type 归类名称 默认为images
+     * @param string $type 归类名称 默认为images
      * @param array $options 文件类型 默认为常用图片,视频,压缩包,办公格式
      * @param null $extensionName 格式类型, 当前有image, video, office, compress
      * @return string
