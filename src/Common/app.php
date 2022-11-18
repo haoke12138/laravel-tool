@@ -44,10 +44,13 @@ if (!function_exists('get_navigate')) {
      */
     function get_navigate()
     {
-        $nar = model('Navigation')->where('enable', 1)->orderBy('order')->get()->toArray();
-        $nar = array_index($nar, 'id');
+        $nar = model('Navigation')
+            ->selectRaw('*, case is_external_link when 1 then external_link else link end as get_link')
+            ->where('enable', 1)
+            ->orderBy('order')
+            ->get();
 
-        return array_tree($nar, 'parent_id');
+        return array_tree($nar->toArray(), 'parent_id');
     }
 }
 
