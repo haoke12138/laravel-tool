@@ -4,6 +4,7 @@ namespace {namespace};
 
 use {model} as Model;
 use Dcat\Admin\Form;
+use App\Admin\Repositories\EloquentRepository;
 
 class {class} extends EloquentRepository
 {
