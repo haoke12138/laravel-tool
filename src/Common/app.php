@@ -132,11 +132,12 @@ if (!function_exists('return_api')) {
             $res = ['code' => 200];
             if (isset($obj->data)) $res['data'] = $obj->data;
             if (isset($obj->msg)) $res['msg'] = $obj->msg;
+            $res['status'] = 'success';
         } catch (\Exception $e) {
-            $res = ['code' => $e->getCode() ? $e->getCode() : 500, 'msg' => $e->getMessage()];
+            $res = ['code' => $e->getCode() ? $e->getCode() : 400, 'msg' => $e->getMessage(), 'status' => 'failed'];
         }
 
-        return response()->json($res, $obj->code);
+        return response()->json($res, $res['code']);
     }
 }
 

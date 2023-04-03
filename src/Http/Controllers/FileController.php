@@ -1,6 +1,5 @@
 <?php
 
-
 namespace ZHK\Tool\Http\Controllers;
 
 use App\Http\Controllers\Controller;

@@ -40,6 +40,12 @@ class ToolServiceProvider extends ServiceProvider
         // 自动加载model, service, repository
         new \ZHK\Tool\Common\Dbu(app());
 
+        // 加载视图
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'zhk');
+
+        // 加载 翻译文件
+        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'zhk');
+
         if ($this->app->runningInConsole()) {
             $this->publishes(static::$filepath);
         }

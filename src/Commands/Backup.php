@@ -46,12 +46,15 @@ class Backup extends Command
     public function handle()
     {
         $database = env('DB_DATABASE');
+        $username = env('DB_USERNAME');
+        $password = env('DB_PASSWORD');
+        $host = env('DB_HOST');
         $path = storage_path("backup");
         if (!file_exists($path)) {
             mkdir($path, 0755, true);
             file_put_contents("$path/.gitignore", "*");
         }
-        exec("mysqldump -uroot $database > $path/$database-" . date("YmdHis"). '.sql');
+        exec("mysqldump -u$username -p$password -h$host $database > $path/$database-" . date("YmdHis"). '.sql');
         $this->info("完成备份!");
     }
 

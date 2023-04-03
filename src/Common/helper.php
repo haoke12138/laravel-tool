@@ -329,3 +329,13 @@ if (!function_exists('last')) {
         return end($array);
     }
 }
+
+if (!function_exists('haoke_path')) {
+    function haoke_path($str = '')
+    {
+        $path = substr(head(explode('src', __DIR__)), 0, -1);
+        if (empty($str)) return $path;
+        if (substr($str, 0, 1) == '/') return "$path$str";
+        return "$path/$str";
+    }
+}

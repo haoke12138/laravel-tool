@@ -2,22 +2,27 @@
 
 namespace ZHK\Tool\Common;
 
+use Illuminate\Http\UploadedFile;
+
 class FileUpload
 {
     private $file = null;
     private $basePath = null;
     private $filepath = null;
-    public $extensions = [
+    public static $extensions = [
         'image' => ['jpeg', 'jpg', 'png', 'gif', 'bmp'],
+        'audio' => ['mp3', 'wav', 'flac', '3pg', 'aa', 'aac', 'ape', 'au', 'm4a', 'mpc', 'ogg'],
         'video' => ['mp4', 'avi', 'rm', 'rmvp', 'wmv', 'm4v', 'mov', '3gp'],
         'office' => ['csv', 'doc', 'docx', 'pdf', 'xlsx', 'xls', 'ppt', 'pptx'],
-        'compress' => ['zip', 'rar', '7z']
+        'compress' => ['zip', 'rar', '7z'],
+        'text' => ['txt', 'pac', 'log', 'md'],
+        'code' => ['php', 'js', 'java', 'python', 'ruby', 'go', 'c', 'cpp', 'sql', 'm', 'h', 'json', 'html', 'aspx'],
     ];
 
-    public static function make($isPublic = false)
+    public static function make($isPublic = false, UploadedFile $file = null)
     {
         $self = new static();
-        $self->file = $_FILES['file'];
+        $self->file = $file ? $file : $_FILES['file'];
         $self->basePath = $isPublic ? storage_path("app/public") : $_SERVER['DOCUMENT_ROOT'];
 
         return $self;
@@ -55,7 +60,7 @@ class FileUpload
     public function file($type, $options = [], $extensionName = null)
     {
         $extension = pathinfo($this->file['name'])['extension'];
-        $extensions = empty($extensionName) ? array_merge(...array_values($this->extensions)) : $this->extensions[$extensionName];
+        $extensions = empty($extensionName) ? array_merge(...array_values(self::$extensions)) : self::$extensions[$extensionName];
         $extensions = empty($options) ? $extensions : array_intersect($extensions, $options);
         if (!in_array($extension, $extensions)) {
             throw new \Exception('上传文件类型不正确, 请检查文件是否是以下类型' . join(',', $extensions));
@@ -76,5 +81,55 @@ class FileUpload
         }
 
         return $name . last(explode($name, $dirPath)) . $filename;
+    }
+
+    /**
+     * 文件上传
+     * 支持版本 >=7.2
+     *
+     * @param string $dir
+     * @param string $isEncrypt
+     */
+    public function uoload($dir, $isEncrypt)
+    {
+        $file = $this->file;
+        #文件类型
+        $mime_type = $file->getMimeType();
+
+        #保存文件夹(默认为upload_files)
+        $folder = $dir . '/' . date('Ym'); //保存文件夹
+
+        #生成文件名
+        $file_name = $this->_getFileName($isEncrypt);
+
+        //配置上传信息
+        config([
+            'filesystems.default' => config('admin.upload.disk', 'admin')
+        ]);
+
+        return $file->storeAs($folder, $file_name);
+    }
+
+    private function _getFileName($isEncrypt = true)
+    {
+        $fileName = $this->file->getClientOriginalName();
+        if ($isEncrypt)
+            $fileName = md5(rand(1, 99999) . $this->file->getClientOriginalName()) . "." . $this->file->getClientOriginalExtension();
+
+        return $fileName;
+    }
+
+    /**
+     * @param $filePath | 文件绝对路径
+     * @return bool|int|string
+     */
+    public static function getFileType($filePath)
+    {
+        foreach (self::$extensions as $type => $extensions) {
+            if (in_array(pathinfo($filePath, PATHINFO_EXTENSION), $extensions)) {
+                return $type;
+            }
+        }
+        return 'other';
     }
 }

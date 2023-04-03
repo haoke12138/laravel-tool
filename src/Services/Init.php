@@ -20,8 +20,13 @@ class Init extends Service
         Artisan::call('admin:install');
         dump('完成dcat_admin表初始化!');
 
+        $this->addMediaTable();
+        dump('完成文件选择表初始化!');
+
         $this->filePublish();
         dump('文件发布完成!');
+
+        Artisan::call('zhk:publish-static');
 
         $this->replaceStubFile();
         dump('dact-admin存根文件替换完成!');
@@ -29,7 +34,6 @@ class Init extends Service
         if ($sqlExecute) {
             $this->restoreBackup();
         }
-
     }
 
     /**
@@ -49,6 +53,30 @@ class Init extends Service
         exec("mysql -uroot -e \"create user '$username'@'localhost' identified by '$password';\"");
         exec("mysql -uroot -e 'grant all on $database.* to $username@localhost;'");
         dump('数据库和用户已经添加完成!');
+    }
+
+    public function addMediaTable()
+    {
+        copy(
+            haoke_path('database/migrations/2021_08_19_133221_create_media_group_table.php'),
+            base_path('database/migrations/2021_08_19_133221_create_media_group_table.php')
+        );
+        copy(
+            haoke_path('database/migrations/2021_08_19_133235_create_media_table.php'),
+            base_path('database/migrations/2021_08_19_133235_create_media_table.php')
+        );
+
+        $this->moveManagedFiles(new MountManager([
+            'from' => new Flysystem(new LocalAdapter(haoke_path('src/Mirror/Models/Media'))),
+            'to' => new Flysystem(new LocalAdapter(app_path('Models/Media'))),
+        ]));
+        copy(
+            haoke_path('database/migrations/2021_08_19_133235_create_media_table.php'),
+            base_path('database/migrations/2021_08_19_133235_create_media_table.php')
+        );
+
+        Artisan::call('migrate');
+        model('ZHK.Tool:Media.Group')->insert(['id' => 0, 'name' => '未分组']);
     }
 
     /**
@@ -81,6 +109,10 @@ class Init extends Service
     public function restoreBackup()
     {
         $database = env('DB_DATABASE');
+        $host = env('DB_HOST');
+        $username = env('DB_USERNAME');
+        $password = env('DB_PASSWORD');
+
         if (empty($database)) {
             throw $this->notFound('请检查.env文件 DB_DATABASE 配置是否正确');
         }
@@ -90,7 +122,7 @@ class Init extends Service
             $filename = $dir . '/' . last(scandir($dir));
             if (substr($filename, -4, 4) === '.sql') {
                 dump('执行storage目录下的最新sql备份文件');
-                exec("mysql -uroot $database < $filename");
+                exec("mysql -h$host -u$username -p$password $database < $filename");
             }
         } else {
             $filename = '';
@@ -102,7 +134,7 @@ class Init extends Service
             }
 
             dump('执行项目根目录下的sql备份文件');
-            exec("mysql -uroot $database < $filename");
+            exec("mysql -h$host -u$username -p$password $database < $filename");
         }
     }
 
@@ -131,7 +163,7 @@ class Init extends Service
      * @param  \League\Flysystem\MountManager  $manager
      * @return void
      */
-    protected function moveManagedFiles($manager)
+    public function moveManagedFiles($manager)
     {
         foreach ($manager->listContents('from://', true) as $file) {
             if ($file['type'] === 'file' && (! $manager->has('to://'.$file['path']))) {
