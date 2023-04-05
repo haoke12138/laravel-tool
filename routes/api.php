@@ -10,4 +10,6 @@ Route::group([
 ], function (Router $router) {
     $router->post('/image', [ctrl\FileController::class, 'image']);
     $router->post('/file', [ctrl\FileController::class, 'file']);
+    $router->post('/images', [ctrl\FileController::class, 'images']);
+    $router->post('/files', [ctrl\FileController::class, 'files']);
 });

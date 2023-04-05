@@ -14,7 +14,7 @@ class FileUpload
         'compress' => ['zip', 'rar', '7z']
     ];
 
-    public static function make($isPublic = false)
+    public static function make($isPublic = true)
     {
         $self = new static();
         $self->file = $_FILES['file'];
@@ -45,8 +45,36 @@ class FileUpload
         return $this->file($name, $options, 'image');
     }
 
+    public function images($name = 'images', $options = [])
+    {
+        $urls = [];
+        if (!is_array(head($this->file))) return [$this->image($name, $options)];
+        $files = $this->multiFileProcessing();
+
+        foreach ($files as $file) {
+            $this->file = $file;
+            $urls[] = $this->image($name, $options);
+        }
+
+        return $urls;
+    }
+
+    public function files($name = 'images', $options = [])
+    {
+        $urls = [];
+        if (!is_array(head($this->file))) return [$this->file($name, $options)];
+
+        $files = $this->multiFileProcessing();
+        foreach ($files as $file) {
+            $this->file = $file;
+            $urls[] = $this->file($name, $options);
+        }
+
+        return $urls;
+    }
+
     /**
-     * @param string $type 归类名称 默认为images
+     * @param $type 归类名称 默认为images
      * @param array $options 文件类型 默认为常用图片,视频,压缩包,办公格式
      * @param null $extensionName 格式类型, 当前有image, video, office, compress
      * @return string
@@ -71,10 +99,26 @@ class FileUpload
         }
 
         $filename = date("YmdHis") . rand(0, 999999) . ".$extension";
-        if (!move_uploaded_file($_FILES['file']['tmp_name'], $dirPath . $filename)) {
+        if (!move_uploaded_file($this->file['tmp_name'], $dirPath . $filename)) {
             throw new \Exception('保存失败!', 500);
         }
 
         return $name . last(explode($name, $dirPath)) . $filename;
+    }
+
+    private function multiFileProcessing()
+    {
+        $files = [];
+        foreach (head($this->file) as $key => $file) {
+            $files[] = [
+                'name' => $this->file['name'][$key],
+                'type' => $this->file['type'][$key],
+                'tmp_name' => $this->file['tmp_name'][$key],
+                'error' => $this->file['error'][$key],
+                'size' => $this->file['size'][$key],
+            ];
+        }
+
+        return $files;
     }
 }

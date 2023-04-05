@@ -23,4 +23,19 @@ class FileController extends Controller
             $obj->data = ['url' => FileUpload::make(true)->file($type)];
         }, $request);
     }
+
+    public function images(Request $request)
+    {
+        return \return_api(function ($obj) {
+            $obj->data = FileUpload::make(true)->images();
+        }, $request);
+    }
+
+    public function files(Request $request)
+    {
+        return \return_api(function ($obj) {
+            $type = $obj->request->get('type', 'files');
+            $obj->data = ['url' => FileUpload::make(true)->files($type)];
+        }, $request);
+    }
 }
