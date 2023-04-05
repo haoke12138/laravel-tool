@@ -123,7 +123,7 @@ if (!function_exists('return_api')) {
      * @param int $code
      * @return \Illuminate\Http\JsonResponse 返回参数 code 回执码 正常为200, [ msg 返回信息, data 返回参数 ]
      */
-    function return_api(\Closure $closure, \Illuminate\Http\Request $request, int $code = 200)
+    function return_api(\Closure $closure, \Illuminate\Http\Request $request = null, int $code = 200)
     {
         $request = empty($request) ? request() : $request;
        $obj =  new \ZHK\Tool\Common\Object_(['data' => null, 'msg' => null, 'request' => $request, 'code' => $code]);

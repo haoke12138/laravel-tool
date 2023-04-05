@@ -190,13 +190,13 @@ if (!function_exists('make_log_path')) {
         $month = date('m');
         $day = date('d');
         if ($level == 3) {
-            return "logs/refund/$year/$month/$day.log";
+            return "logs/$name/$year/$month/$day.log";
         }
         if ($level == 2) {
-            return "logs/refund/$year/$month-$day.log";
+            return "logs/$name/$year/$month-$day.log";
         }
 
-        return "logs/refund/$year-$month-$day.log";
+        return "logs/$name/$year-$month-$day.log";
     }
 }
 
@@ -264,6 +264,20 @@ if (!function_exists('crossJoin')) {
         }
 
         return $result;
+    }
+}
+
+if (!function_exists('is_mobile')) {
+    function is_mobile($mobile)
+    {
+        return preg_match("/^1[3456789]{1}\d{9}$/", $mobile);
+    }
+}
+
+if (!function_exists('mobile_encode')) {
+    function mobile_encode($mobile, $str = 'x')
+    {
+        return str_pad(substr($mobile, 0, 3),7,'x') . substr($mobile, -4, 4);
     }
 }
 
