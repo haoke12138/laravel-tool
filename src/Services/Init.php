@@ -133,7 +133,7 @@ class Init extends Service
      */
     public function replaceTinymceFile()
     {
-        $filepath = base_path('vendor/dcat/laravel-admin/resources/views/form/display.blade.php');
+        $filepath = base_path('vendor/dcat/laravel-admin/resources/views/form/editor.blade.php');
         dump('开始替换dcat存根文件');
         unlink($filepath);
         copy(__DIR__. '/../../resources/views/admin/editor.blade.php', $filepath);

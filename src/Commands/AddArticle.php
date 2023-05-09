@@ -128,8 +128,8 @@ class AddArticle extends Command
         if (!file_exists($dirPath)) {
             mkdir($dirPath, 0755, true);
         }
-        app('files')->copy(__DIR__ . '/../Mirror/Models/Article/Article.php', $dirPath . '/Article.php');
-        app('files')->copy(__DIR__ . '/../Mirror/Models/Article/Category.php', $dirPath . '/Category.php');
+        app('files')->copy(__DIR__ . '/../Mirror/Models/Article.php',  "$dirPath/Article.php");
+        app('files')->copy(__DIR__ . '/../Mirror/Models/Article/Category.php',  "$dirPath/Article/Category.php");
     }
 
 }
