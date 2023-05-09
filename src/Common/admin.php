@@ -13,21 +13,14 @@ if (!function_exists('setAdminFile')) {
      * @param string $extensions
      * @return Form\Field\File
      */
-    function setAdminVideo($form, $column, $alice = null, $extensions = 'mp4,rm,rmvb,avi', $help = '建议使用MP4的视频格式')
+    function setAdminFile($form, $column, $alice = null)
     {
-        $form = $form->file($column, $alice)
+        return $form->file($column, $alice)
             ->autoUpload()
             ->chunked()                   // 开启分块传输
             ->chunkSize(1024 * 2)  // 设置分块传输的文件大小
-            ->threads(5)            // 设置5个线程进行传输
+            ->threads(5);            // 设置5个线程进行传输
 //            ->maxSize(1024 * 700)    // 设置最大传输大小
-            ->accept($extensions);
-
-        if (empty($help)) {
-            return $form;
-        }
-
-        return $form->help($help);
     }
 }
 

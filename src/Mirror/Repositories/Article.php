@@ -22,7 +22,17 @@ class Article extends EloquentRepository
             }
         }
         if (is_null($form->input('desc'))) {
-            $form->updates(['desc' => '']);
+            $form->updates(['desc' => ' ']);
+        }
+        if (is_null($form->input('source'))) {
+            $form->updates(['source' => ' ']);
+        }
+        if (is_null($form->input('author'))) {
+            $form->updates(['author' => ' ']);
+        }
+        if (!$form->isDeleting() && $form->input('attachment')) {
+            $fileType = \Storage::disk('public')->getMimetype($form->input('attachment'));
+            $form->updates(['file_type' => $fileType]);
         }
 //        $this->setThumbnailInfo($form);
     }

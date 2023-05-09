@@ -10,7 +10,7 @@ use League\Flysystem\MountManager;
 class Init extends Service
 {
     /**
-     * 项目初始化
+     * @deprecated 项目初始化
      * @param bool $sqlExecute sql是否执行
      * @throws Exceptions\NotFundException
      */
@@ -26,6 +26,9 @@ class Init extends Service
         $this->replaceStubFile();
         dump('dact-admin存根文件替换完成!');
 
+        $this->replaceTinymceFile();
+        dump('dact-admin tinymce 编辑器文件 替换完成!');
+
         if ($sqlExecute) {
             $this->restoreBackup();
         }
@@ -33,7 +36,7 @@ class Init extends Service
     }
 
     /**
-     * 创建数据库用户和连接的数据库
+     * @deprecated 创建数据库用户和连接的数据库
      * @throws Exceptions\NotFundException
      */
     public function initDatabase()
@@ -52,7 +55,7 @@ class Init extends Service
     }
 
     /**
-     * 文件发布
+     * @deprecated 文件发布
      */
     public function filePublish()
     {
@@ -76,7 +79,7 @@ class Init extends Service
     }
 
     /**
-     * 恢复备份sql
+     * @deprecated 恢复备份sql
      */
     public function restoreBackup()
     {
@@ -107,7 +110,7 @@ class Init extends Service
     }
 
     /**
-     * 替换dcat存根文件
+     * @deprecated 替换dcat存根文件
      */
     public function replaceStubFile()
     {
@@ -115,14 +118,26 @@ class Init extends Service
         dump('开始替换dcat存根文件');
 
         // model
-        exec('rm ' . $dir.'/model.stub');
+        unlink("$dir/model.stub");
         copy(__DIR__. '/../dcat-stub/model.stub', $dir.'/model.stub');
         exec('chmod 777 ' . $dir.'/model.stub');
 
         // repository
-        exec('rm ' . $dir.'/repository.stub');
+        unlink("$dir/repository.stub");
         copy(__DIR__. '/../dcat-stub/repository.stub', $dir.'/repository.stub');
         exec('chmod 777 ' . $dir.'/repository.stub');
+    }
+
+    /**
+     * @deprecated 替换dcat-admin tinymce编辑器文件
+     */
+    public function replaceTinymceFile()
+    {
+        $filepath = base_path('vendor/dcat/laravel-admin/resources/views/form/display.blade.php');
+        dump('开始替换dcat存根文件');
+        unlink($filepath);
+        copy(__DIR__. '/../../resources/views/admin/editor.blade.php', $filepath);
+        exec("chmod 777 $filepath");
     }
 
     /**

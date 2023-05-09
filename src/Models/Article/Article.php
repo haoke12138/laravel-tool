@@ -30,7 +30,7 @@ class Article extends Model
 
     public function getDate()
     {
-        return head(explode(' ', $this->published_time));
+        return head(explode(' ', $this->published_at));
     }
 
     public function category()
@@ -38,21 +38,13 @@ class Article extends Model
         return $this->belongsTo(model('Article.Category')->getClassname(), 'category_id', 'id');
     }
 
-    public function searchArticles($request)
+    public function getArticle($id, $type = null)
     {
-        $page = $request->get('page');
-        $keyword = $request->get('keyword');
-        $limit = 9;
-        $articles = $this->where('title', 'like', "%{$keyword}%");
-        $count = $articles->count();
-        $articles = $articles->offset(($page - 1) * $limit)->limit($limit)->orderBy('order')->latest('published_time')->get();
-
-        return ['countPage' => ceil($count / $limit), 'count' => $count, "articles" => $articles];
-    }
-
-    public function getArticle($id)
-    {
-        $article = $this->where('enable', 1)->where('id', $id)->first();
+        $conditions = ['enable' => 1, 'id' => $id];
+        if ($type) {
+            $conditions['article_type'] = $type;
+        }
+        $article = $this->where($conditions)->first();
         if ($article) {
             $article->increment('visited', 1);
             return $article;

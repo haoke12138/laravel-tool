@@ -14,8 +14,9 @@ return [
         'author' => '作者',
         'enable' => '状态',
         'link' => '链接地址',
+        'visited' => '访问量',
         'type' => '是否跳转外部文章',
-        'published_time' => '发布时间',
+        'published_at' => '发布时间',
         'category_id' => '文章分类',
 
         'category' => [

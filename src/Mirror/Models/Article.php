@@ -1,17 +1,21 @@
 <?php
 
-namespace App\Models\Article;
+namespace App\Models;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use ZHK\Tool\Models\Article\Article as Model;
 
 class Article extends Model
 {
+    use SoftDeletes;
+
     protected $table = 'article';
     protected $guarded = [];
 
-    public function getHome($type = 'news', $limit = 3)
+    public function getByTopVisited($type, $limit = 10)
     {
-        return $this->where('article_type', $type)->latest('published_time')->limit($limit)->get();
+        return $this->where('article_type', $type)->orderBy('order')->orderBy('visited', 'desc')
+            ->OrderBy('published_at', 'desc')->limit($limit)->get();
     }
 
     public function moreArticles($cateId, $limit = 6, $type = null)
@@ -25,6 +29,6 @@ class Article extends Model
 
     public function topArticles($type = 'news', $limit = 10)
     {
-        return $this->orderBy('order')->latest('published_time')->where('type', $type)->limit($limit)->get();
+        return $this->orderBy('order', 'asc')->latest('published_at')->where('article_type', $type)->limit($limit)->get();
     }
 }

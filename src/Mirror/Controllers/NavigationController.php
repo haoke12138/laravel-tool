@@ -4,6 +4,7 @@ namespace App\Admin\Controllers;
 
 use Dcat\Admin\Form;
 use Dcat\Admin\Grid;
+use Dcat\Admin\Http\Auth\Permission;
 use Dcat\Admin\Show;
 use App\Admin\Repositories\Navigation;
 use ZHK\Tool\Admin\Controllers\NavigationController as AdminController;
@@ -25,6 +26,11 @@ class NavigationController extends AdminController
             $grid->column('enable')->switch();
             $grid->column('created_at');
             $grid->column('updated_at')->sortable();
+//            $grid->actions(function (Grid\Displayers\Actions $action) {
+//                if (in_array($this->id, range(1, 16))) {
+//                    $action->disableDelete();
+//                }
+//            });
 
             $grid->filter(function (Grid\Filter $filter) {
                 $filter->like('title');
@@ -52,6 +58,9 @@ class NavigationController extends AdminController
             $show->field('enable')->using(['隐藏', '显示']);
             $show->field('created_at');
             $show->field('updated_at');
+//            if (in_array($show->model()->id, range(1, 16))) {
+//                $show->disableDeleteButton();
+//            }
         });
     }
 
@@ -61,7 +70,12 @@ class NavigationController extends AdminController
             $form->tab('基本设置', function (Form $form) {
                 $form->display('id');
                 $form->text('title')->required()->rules('string|max: 20');
-                $form->text('slug')->required()->rules('string|max: 50');
+//                if (in_array($form->model()->id, range(1, 16))) {
+//                    $form->display('slug');
+//                    $form->disableDeleteButton();
+//                    if ($form->isDeleting()) Permission::error();
+//                } else
+                    $form->text('slug')->required()->rules('string|max: 50');
                 setAdminImage($form, 'image')->required();
                 setAdminImage($form, 'mobile_image')->required();
                 $form->embeds('banner_info', '', function (Form\EmbeddedForm $form) {

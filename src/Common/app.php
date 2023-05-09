@@ -1,19 +1,27 @@
 <?php
 
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Writer\PngWriter;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use \Illuminate\Support\Collection;
-if (! function_exists('collect_tree')) {
+
+if (!function_exists('collect_tree')) {
     /**
-     * @see 完成无限级分类
-     * @param $array
+     * @deprecated 无限级分类(集合)
+     * @param Collection $array
      * @param string $key
      * @param int $id
+     * @param string $orderBy
+     * @param int $sortType
      * @return array
      */
-    function collect_tree(Collection $array, $key='parent_id', $id = 0, $orderBy = 'order', $sortType = SORT_ASC)
+    function collect_tree(Collection $array, $key = 'parent_id', $id = 0, $orderBy = 'order', $sortType = SORT_ASC)
     {
         $array = $array->sortBy($orderBy, SORT_REGULAR, $sortType == SORT_DESC); // desending 是 true时为倒序
 
-        $newArray = $filterArray = $array->filter(function ($a) use($key, $id) {
+        $newArray = $filterArray = $array->filter(function ($a) use ($key, $id) {
             return $a[$key] == $id;
         });
 
@@ -27,7 +35,7 @@ if (! function_exists('collect_tree')) {
 
 if (!function_exists('get_navigate_set')) {
     /**
-     * @see 获取导航栏
+     * @deprecated 获取导航栏
      * @return array
      */
     function get_navigate_set()
@@ -39,24 +47,21 @@ if (!function_exists('get_navigate_set')) {
 
 if (!function_exists('get_navigate')) {
     /**
-     * @see 获取导航栏
+     * @deprecated 获取导航栏
      * @return array
      */
     function get_navigate()
     {
-        $nar = model('Navigation')
-            ->selectRaw('*, case is_external_link when 1 then external_link else link end as get_link')
-            ->where('enable', 1)
-            ->orderBy('order')
-            ->get();
+        $nar = model('Navigation')->where('enable', 1)->orderBy('order')->get()->toArray();
+        $nar = array_index($nar, 'id');
 
-        return array_tree($nar->toArray(), 'parent_id');
+        return array_tree($nar, 'parent_id');
     }
 }
 
 if (!function_exists('get_current_page')) {
     /**
-     * @see 获取当前页面
+     * @deprecated 获取当前页面导航信息
      * @param $slug
      * @return array
      */
@@ -79,7 +84,7 @@ if (!function_exists('get_current_page')) {
 
 if (!function_exists('get_parent_slug')) {
     /**
-     * 获取上级标识, 若为顶级返回当前标识
+     * @deprecated 获取上级标识, 若为顶级返回当前标识
      * @param $slug
      * @return string
      */
@@ -119,14 +124,14 @@ if (!function_exists('write_route')) {
 if (!function_exists('return_api')) {
     /**  api返回
      * @param Closure $closure 形参obj对象属性有 data 返回参数, msg 返回信息, request 请求, code 状态码
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      * @param int $code
-     * @return \Illuminate\Http\JsonResponse 返回参数 code 回执码 正常为200, [ msg 返回信息, data 返回参数 ]
+     * @return JsonResponse 返回参数 code 回执码 正常为200, [ msg 返回信息, data 返回参数 ]
      */
-    function return_api(\Closure $closure, \Illuminate\Http\Request $request = null, int $code = 200)
+    function return_api(\Closure $closure, Request $request = null, int $code = 200)
     {
         $request = empty($request) ? request() : $request;
-       $obj =  new \ZHK\Tool\Common\Object_(['data' => null, 'msg' => null, 'request' => $request, 'code' => $code]);
+        $obj = new \App\Common\Object_(['data' => null, 'msg' => null, 'request' => $request, 'code' => $code]);
         try {
             $closure($obj);
             $res = ['code' => 200];
@@ -140,3 +145,17 @@ if (!function_exists('return_api')) {
     }
 }
 
+
+if (!function_exists('mobile_encode')) {
+    /**
+     * @deprecated 手机隐藏显示
+     * @param $mobile
+     * @param string $str
+     * @return string
+     */
+    function mobile_encode($mobile, $str = 'x')
+    {
+
+        return substr($mobile, 0, 3) . $str . $str . $str . $str . substr($mobile, -4, 4);
+    }
+}

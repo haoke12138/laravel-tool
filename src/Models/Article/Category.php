@@ -10,7 +10,7 @@ class Category extends Model
 
     public function article()
     {
-        return $this->hasMany(model('Article.Article')->getClassname());
+        return $this->hasMany(model('Article')->getClassname());
     }
 
     public function getByType($type)

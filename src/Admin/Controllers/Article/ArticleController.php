@@ -20,8 +20,8 @@ class ArticleController extends AdminController
     {
         return Grid::make($this->getArticleRep(['category']), function (Grid $grid) {
             $grid->model()->where('article_type', 'news')
-                ->orderBy('published_time', 'desc')->orderBy('id', 'desc');
-//            $grid->model()->orderBy('order')->orderBy('published_time', 'desc')->orderBy('id', 'desc');
+                ->orderBy('published_at', 'desc')->orderBy('id', 'desc');
+//            $grid->model()->orderBy('order')->orderBy('published_at', 'desc')->orderBy('id', 'desc');
             $grid->column('id')->sortable();
             $grid->column('title')->limit(30);
             $grid->column('category.title');
@@ -29,7 +29,7 @@ class ArticleController extends AdminController
             $grid->column('enable')->using(['未发布', '已发布']);
             $grid->column('source');
             $grid->column('author');
-            $grid->column('published_time')->sortable();
+            $grid->column('published_at')->sortable();
             $grid->column('created_at', '创建时间');
             $grid->column('updated_at', '更新时间')->sortable();
 
@@ -88,7 +88,7 @@ class ArticleController extends AdminController
                 });
                 $form->editor('content');
                 $form->switch('enable');
-                $form->date('published_time')->default(date('Y-m-d H:i:s'));
+                $form->date('published_at')->default(date('Y-m-d H:i:s'));
 //                $form->number('order')->default(100);
 //                $form->hidden('width')->value(0);
 //                $form->hidden('height')->value(0);
